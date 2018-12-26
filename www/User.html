@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Material Design Lite Login From</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="css/material.min.css" />
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/jquery.3.3.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="angular/angular.min.js"></script>
+    <script src="angular/angular-sanitize.min.js"></script>
+    <script src="angular/ui-bootstrap-tpls.min.js"></script>
+    <script src="angular/ng-file-upload.min.js"></script>
+    <script src="scripts/Controllers/ProductController.js"></script>
+</head>
+
+<body ng-app="MyApp" ng-controller="ProductController" ng-cloak>
+    <!-- Always shows a header, even in smaller screens. -->
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <header class="mdl-layout__header  text-nowrap text-truncate">
+            <div class="mdl-layout__header-row">
+                <!-- Title -->
+                <span class="mdl-layout-title text-nowrap text-truncate">Title</span>
+                <!-- Add spacer, to align navigation to the right -->
+                <div class="mdl-layout-spacer"></div>
+                <!-- Navigation. We hide it in small screens. -->
+                <div ng-include="'Mainmenu.html'"></div>
+               
+                <button id="demo-menu-lower-right-profile" class="mdl-button mdl-js-button mdl-button--icon ml-2">
+                    <i class="material-icons">account_circle</i>
+                </button>
+
+                <button id="demo-menu-lower-right-signout" class="mdl-button mdl-js-button mdl-button--icon ml-2">
+                    <i class="material-icons">power_settings_new</i>
+                </button>
+            </div>
+        </header>
+        <div class="mdl-layout__drawer">
+            <span class="mdl-layout-title">Title</span>
+            <div ng-include="'Navitems_sm.html'"></div>
+
+        </div>
+        <main class="mdl-layout__content">
+            <div class="page-content" ng-init="">
+                <!-- Your content goes here -->
+                <div class="mdl-grid">
+                        <div class="mdl-cell mdl-cell--2-col mdl-cell--2-col-tablet mdl-cell--2-col-phone">
+                                <button class="mdl-button mdl-js-button mdl-button--raised btn-primary">
+                                        Add New
+                                      </button>
+                            </div>
+                                    <div class="mdl-cell mdl-cell--4-col mdl-cell--6-col-tablet mdl-cell--12-col-phone ml-auto">
+                                      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label pull-right">
+                                            <input class="mdl-textfield__input" type="text" id="sample3">
+                                            <label class="mdl-textfield__label" for="sample3">Search</label>
+                                          </div>
+                        </div>
+                </div>
+                        <div class="mdl-grid">
+                    <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--12-col-phone mdl-card mdl-shadow--2dp">                           <div class="table-responsive">
+                                <table class="table table-stripped">
+                                    <thead>
+                                        <th>#</th>
+                                        <th>Name</th>
+                                        <th>Role</th>
+                                        <th>Email</th>
+                                        <th>Mobile</th>
+                                        <th>Action</th>
+                                    </thead>
+                                </table>
+                           </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script defer src="js/material.min.js"></script>
+</body>
+
+</html>
