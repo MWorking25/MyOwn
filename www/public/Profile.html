@@ -1,0 +1,52 @@
+<main ng-controller="LoginController">
+    <div ng-include="'public/Mainmenu.html'"></div>
+
+    <div class="container">
+        <div class="row mt-2">
+            <div class="col s12 m12">
+                <div class="card">
+                    <div class="card-image">
+                        <img src="../images/booksbg.jpg">
+
+                        <a class="btn-floating btn-large img-thumbnail halfway-fab profileimge waves-effect waves-light left"><img
+                                src="../images/photos.png"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col s12 m12 mt-4">
+                <div class="input-field col s12 m6">
+                    <input id="name" type="text" class="validate" ng-model="UserDetails[0].name" value="xxx xxx xxx"
+                        autofocus>
+                    <label for="name" class="text-right">Name</label>
+                </div>
+                <div class="input-field col s12 m6">
+                    <input id="email" type="email" class="validate" ng-model="UserDetails[0].email" autofocus>
+                    <label for="email" class="text-right">Email</label>
+                </div>
+                <div class="input-field col s6 m4">
+                    <input id="mobile" type="number" class="validate" ng-model="UserDetails[0].mobile">
+                    <label for="mobile" class="text-right">Mobile</label>
+                </div>
+                <div class="input-field col s6 m4">
+                    <input id="role" type="number" class="validate" ng-model="UserDetails[0].role" readonly>
+                    <label for="role" class="text-right">Role</label>
+                </div>
+            </div>
+            <div class="col s12 m12 mt-1">
+
+                    <div class="input-field col s6 m4 passwordfield">
+                            <input id="password" type="password" class="validate" ng-model="UserDetails[0].password">
+                            <label for="password">Password</label>
+                            <i class="material-icons showhidepassword" ng-click="showHidePassword('password')">{{paswdvsicon}}</i>
+                        </div>
+
+                        <div class="input-field col s6 m4 passwordfield">
+                                <input id="cnfpassword" type="password" class="validate" ng-model="confirm_password">
+                                <label for="cnfpassword">Confirm Password</label>
+                                <i class="material-icons showhidepassword" ng-click="showHidePassword('cnfpassword')">{{paswdvsiconconf}}</i>
+                            </div>
+
+            </div>
+        </div>
+    </div>
+</main>

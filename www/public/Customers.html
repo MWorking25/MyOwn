@@ -1,0 +1,75 @@
+<main ng-controller="ProductController" >
+        <div ng-include="'public/Mainmenu.html'"></div>
+        <div class="row ml-lg-1 ml-md-1">
+            <div class="col s12 m12">
+                <h5>Customers</h5>
+            </div>
+            <div class="col m2 s3">
+                <a class="waves-effect waves-light btn modal-trigger" data-target="CustomerDetails">Add New</a>
+            </div>
+            <div class="col m3 s9 right">
+                <input type="text" class="validate" placeholder="Search" ng-model="Search">
+            </div>
+            <div class="col m12 s12">
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <th>#</th>
+                            <th class="text-center" data-field="name">Name</th>
+                            <th class="text-center" data-field="email">Email</th>
+                            <th class="text-center" data-field="mobile">Mobile</th>
+                            <th class="text-center">Action</th>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="data in CustomersList | filter:Search">
+                                <td> <label>
+                                        <input type="checkbox" ng-model="data.bool" />
+                                        <span>{{$index +1}}</span>
+                                    </label></td>
+                                    <td>{{data.name}}</td>
+                                <td>{{data.email}}</td>
+                                <td>{{data.mobile}}</td>
+                                <td class="text-nowrap text-center"><a class="btn amber" ng-click="GetCustomerDetails(data.id)">Edit</a> | <a class="btn red"  ng-click="DeleteCustomerDetails(data.id)">Delete</a></td>
+                            </tr>
+                        </tbody>
+    
+                    </table>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Modal Structure -->
+        <div id="CustomerDetails" class="modal modal-fixed-footer">
+            <div class="modal-content">
+                <h4>Customer Details</h4>
+                <form>
+                        <div class="row">
+                                <div class="input-field col s12 m4">
+                                        <input id="name" type="text" class="validate" ng-model="CustomerDetails[0].name">
+                                        <label for="name">Name</label>
+                                </div>
+                                <div class="input-field col s12 m4">
+                                    <input id="email" type="email" class="validate" ng-model="CustomerDetails[0].email">
+                                    <label for="email">Email</label>
+                                </div>
+                                <div class="input-field col s6 m4">
+                                        <input id="mobile" type="number" class="validate" ng-model="CustomerDetails[0].mobile">
+                                        <label for="mobile">Mobile</label>
+                                    </div>
+                            </div>
+                    <div class="row">
+                            
+                    <div class="input-field col s12 m12">
+                            
+                            <textarea id="address" class="materialize-textarea" ng-model="CustomerDetails[0].address"></textarea>
+                            <label for="address">Address</label>
+                    </div>
+                </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a href="" class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+                <a href="" ng-click="SaveCustomerDetails()" class="modal-action modal-close waves-effect waves-green btn-flat">Submit</a>
+            </div>
+        </div>
+    </main>

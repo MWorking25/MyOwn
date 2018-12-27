@@ -1,11 +1,55 @@
 angular.module('MyApp', ['ngSanitize','ngRoute','ui.bootstrap','ngFileUpload']).config(function($routeProvider) {
     $routeProvider
     .when("/", {
-        templateUrl : "pages/Login.html",
+        templateUrl : "public/Login.html",
 		controller:"LoginController"
     })
     .when("/Login", {
-        templateUrl : "pages/Login.html",
+        templateUrl : "public/Login.html",
+		controller:"LoginController"
+    })
+	.when("/Dashboard", {
+        templateUrl : "public/Dashboard.html",
+		controller:"DashboardController"
+    })
+    .when("/Users", {
+        templateUrl : "public/Users.html",
+		controller:"LoginController"
+    })
+    .when("/Brands", {
+        templateUrl : "public/Brands.html",
+		controller:"DashboardController"
+    })
+    .when("/Products", {
+        templateUrl : "public/Products.html",
+		controller:"DashboardController"
+    })
+    .when("/Customers", {
+        templateUrl : "public/Customers.html",
+		controller:"DashboardController"
+    })
+    .when("/Sales", {
+        templateUrl : "public/Sales.html",
+		controller:"DashboardController"
+    })
+    .when("/Purchase", {
+        templateUrl : "public/Purchase.html",
+		controller:"DashboardController"
+    })
+    .when("/Inventory", {
+        templateUrl : "public/Inventory.html",
+		controller:"DashboardController"
+    })
+    .when("/Inquiries", {
+        templateUrl : "public/Inquiries.html",
+		controller:"DashboardController"
+    })
+    .when("/Companies", {
+        templateUrl : "public/Companies.html",
+		controller:"LoginController"
+    })
+    .when("/Profile", {
+        templateUrl : "public/Profile.html",
 		controller:"LoginController"
     })
 	.otherwise({
