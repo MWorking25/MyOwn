@@ -33,14 +33,21 @@
                 </div>
             </div>
             <div class="col s12 m12 mt-1">
-
-                    <div class="input-field col s6 m4 passwordfield">
+                <div class="col s12 m12">
+                    <strong>Change Password:</strong>
+                </div>
+                <div class="input-field col s12 m4 passwordfield">
+                    <input id="curpassword" type="password" class="validate" ng-model="UserDetails[0].currentpassword">
+                    <label for="curpassword">Current Password</label>
+                    <i class="material-icons showhidepassword" ng-click="showHidePassword('curpassword')">{{curpaswdvsicon}}</i>
+                </div>
+                    <div class="input-field col s12 m4 passwordfield">
                             <input id="password" type="password" class="validate" ng-model="UserDetails[0].password">
-                            <label for="password">Password</label>
+                            <label for="password">New Password</label>
                             <i class="material-icons showhidepassword" ng-click="showHidePassword('password')">{{paswdvsicon}}</i>
                         </div>
 
-                        <div class="input-field col s6 m4 passwordfield">
+                        <div class="input-field col s12 m4 passwordfield">
                                 <input id="cnfpassword" type="password" class="validate" ng-model="confirm_password">
                                 <label for="cnfpassword">Confirm Password</label>
                                 <i class="material-icons showhidepassword" ng-click="showHidePassword('cnfpassword')">{{paswdvsiconconf}}</i>

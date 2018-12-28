@@ -2,6 +2,46 @@ angular.module('MyApp').controller('ProductController', function ($scope,$http,$
  
   
   M.AutoInit();
+  $scope.openNav = function() {
+    document.getElementById("mySidenav").style.width = "250px";
+    }
+    
+    $scope.closeNav = function() {
+    document.getElementById("mySidenav").style.width = "0";
+    }
+    
+
+    $scope.HitNav = function() {
+      if(document.getElementById("mySidenav").style.width == '' || document.getElementById("mySidenav").style.width == '0px')
+      {
+        $scope.openNav()
+      }
+      else
+      {
+        $scope.closeNav();
+      }
+		
+    };
+    
+    $(document).click(function(e){
+      if ($(e.target).is('.container,.container *')) {
+        $scope.closeNav();
+      }
+      else
+      {
+       
+      }
+  });
+      
+    
+    $scope.NotificationsList = []
+    for(var i = 0 ; i < 35;i++)
+    {
+      $scope.NotificationsList.push({message:"Productddddd- "+i})
+    }
+    
+
+  
 
 $scope.BrandsList = [{id:1,name:'brand 1',description:'n.a'},{id:2,name:'brand 2',description:'n.a'}];
 

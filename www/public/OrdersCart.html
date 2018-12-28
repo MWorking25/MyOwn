@@ -1,0 +1,25 @@
+<main ng-controller="ProductController">
+    <div ng-include="'public/Mainmenu.html'"></div>
+    <div class="row ml-lg-1 ml-md-1">
+        <div class="col s12 m12">
+                hjdvdhj
+        </div>
+        <div class="row">
+                <div class="col s6 m2 " ng-repeat="data in NotificationsList">
+                  <div class="card  grey lighten-5">
+                    <div class="card-content black-text carticons" style="background-image: url(../images/carticons/book.png)">
+                      <span class="card-title">{{data.message}}</span>
+                     
+                    </div>
+                    <div class="card-action">
+                            <span class="card-title">Slot: {{$index +1}}</span><br>
+                      <div class="col s12">
+                          
+                      </div>>
+                    </div>
+                  </div>
+                </div>
+              </div>
+       
+    </div>
+</main>

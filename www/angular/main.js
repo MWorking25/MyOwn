@@ -51,6 +51,9 @@ angular.module('MyApp', ['ngSanitize','ngRoute','ui.bootstrap','ngFileUpload']).
     .when("/Profile", {
         templateUrl : "public/Profile.html",
 		controller:"LoginController"
+    }).when("/OrdersCart", {
+        templateUrl : "public/OrdersCart.html",
+		controller:"LoginController"
     })
 	.otherwise({
 		  redirectTo: ''

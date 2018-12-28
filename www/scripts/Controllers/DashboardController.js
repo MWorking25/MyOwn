@@ -2,9 +2,43 @@ angular.module('MyApp')
 .controller('DashboardController',function ($scope,$http,$route) {
 
     M.AutoInit();
-
-
+    $scope.openNav = function() {
+			document.getElementById("mySidenav").style.width = "250px";
+		  }
+		  
+		  $scope.closeNav = function() {
+			document.getElementById("mySidenav").style.width = "0";
+		  }
+		
+		$scope.HitNav = function() {
+      if(document.getElementById("mySidenav").style.width == '' || document.getElementById("mySidenav").style.width == '0px')
+      {
+        $scope.openNav()
+      }
+      else
+      {
+        $scope.closeNav();
+      }
+		
+    }
     
+    $(document).click(function(e){
+      if ($(e.target).is('.container,.container *')) {
+        $scope.closeNav();
+      }
+      else
+      {
+       
+      }
+  });
+      
+    
+    $scope.NotificationsList = []
+    for(var i = 0 ; i < 15;i++)
+    {
+      $scope.NotificationsList.push({message:"message text"+i})
+    }
+
     $scope.getMonthlyStockStatement = function()
     {
 
