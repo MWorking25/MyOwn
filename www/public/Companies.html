@@ -45,48 +45,77 @@
     <div id="CompanyDetails" class="modal modal-fixed-footer">
         <div class="modal-content">
             <h4>Company Details</h4>
-            <form>
+            <form name="companydetails">
                 <div class="row">
                     <div class="input-field col s12 m6">
-                        <input id="name" type="text" class="validate" ng-model="CompanyDetails[0].name">
+                        <input id="name" type="text" class="validate" ng-model="CompanyDetails[0].name" required>
                         <label for="name">Name</label>
                     </div>
-                    <div class="input-field col s6 m6">
-                            <input id="owner" type="text" class="validate" ng-model="CompanyDetails[0].owner">
-                            <label for="owner">Owner</label>
-                        </div>
                     <div class="input-field col s12 m6">
-                        <input id="email" type="email" class="validate" ng-model="CompanyDetails[0].email">
+                        <input id="owner" type="text" class="validate" ng-model="CompanyDetails[0].owner" required>
+                        <label for="owner">Owner</label>
+                    </div>
+                    <div class="input-field col s12 m6">
+                        <input id="email" type="email" class="validate" ng-model="CompanyDetails[0].email" required>
                         <label for="email">Email</label>
                     </div>
-                    <div class="input-field col s6 m6">
-                            <input id="mobile" type="number" class="validate" ng-model="CompanyDetails[0].mobile">
-                            <label for="mobile">Mobile</label>
+                    <div class="input-field col s12 m3">
+                        <input id="mobile" type="number" class="validate" ng-model="CompanyDetails[0].mobile1" required>
+                        <label for="mobile">Mobile</label>
+                    </div>
+                    <div class="input-field col s12 m3">
+                        <input id="mobile2" type="number" class="validate" ng-model="CompanyDetails[0].mobile2">
+                        <label for="mobile2">Alt. Mobile</label>
                     </div>
                 </div>
                 <div class="row">
-                            
-                        <div class="input-field col s12 m12">
-                                
-                                <textarea id="address" class="materialize-textarea" ng-model="CompanyDetails[0].address"></textarea>
-                                <label for="address">Address</label>
-                        </div>
-                        <div class="input-field col s12 m6">
-                                <input id="gstin" type="text" ng-model="CompanyDetails[0].gstin">
-                                <label for="gstin">GSTIN</label>
-                            </div>
-                            <div class="input-field col s12 m6">
-                                    <input id="website" type="text" class="validate" ng-model="CompanyDetails[0].website">
-                                    <label for="website">Website</label>
-                                </div>
+
+                    <div class="input-field col s12 m6">
+                        <input id="address_ln1" type="text" class="validate" ng-model="CompanyDetails[0].address_ln1" required>
+                        <label for="address_ln1">Address Line 1</label>
                     </div>
 
-               
+                    <div class="input-field col s12 m6">
+
+                        <input id="address_ln2" type="text" class="validate" ng-model="CompanyDetails[0].address_ln2" required>
+                        <label for="address_ln2">Address Line 2</label>
+                    </div>
+
+                    <div class="input-field col s12 m6">
+                        <input id="gstin" type="text" ng-model="CompanyDetails[0].gstin">
+                        <label for="gstin">GSTIN</label>
+                    </div>
+                    <div class="input-field col s12 m6">
+                        <input id="website" type="text" class="validate" ng-model="CompanyDetails[0].website">
+                        <label for="website">Website</label>
+                    </div>
+                </div>
+                <div class="row">
+                        <div class="input-field col s12 m6">
+                                <div class="file-field input-field">
+                                        <div class="btn">
+                                          <span>File</span>
+                                          <input type="file" id="imgInp" ngf-select ng-model="logo" name="file" ngf-pattern="'image/*'"
+                                          ngf-accept="'image/*'" ngf-max-size="20MB" ngf-min-height="100" 
+                                          ngf-resize="{width: 100, height: 100}">
+                                        </div>
+                                        <div class="file-path-wrapper">
+                                          <input class="file-path validate" placeholder="Select File" type="text">
+                                        </div>
+                                      </div>
+                        </div>
+                        <div class="col s12 m6">
+                                <img id="imgpanel" src="uploads/{{CompanyDetails[0].logo}}"  />
+                                <button class="imgbtn btn grey" ng-click="clear()">Clear</button>
+                        </div>
+                    </div>
+
+
             </form>
         </div>
         <div class="modal-footer">
             <a href="" class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>
-            <a href="" ng-click="SaveCompanyDetails()" class="modal-action modal-close waves-effect waves-green btn-flat">Submit</a>
+            <a href="" ng-click="SaveCompanyDetails()" ng-disabled="companydetails.$invalid" class="modal-action modal-close waves-effect waves-green btn-flat">Submit</a>
         </div>
     </div>
 </main>

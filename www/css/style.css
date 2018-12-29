@@ -2213,3 +2213,56 @@ input[type=number]::-webkit-outer-spin-button {
     .sidenav_notification {padding-top: 15px;}
     .sidenav_notification a {font-size: 18px;}
   }
+
+
+
+button:before {
+    content: attr(data-count);
+    width: 18px;
+    height: 18px;
+    line-height: 18px;
+    text-align: center;
+    display: block;
+    border-radius: 50%;
+    background:transparent;
+    color: #FFF;
+    position: absolute;
+    top: 0;
+    left: -7px;
+}
+
+button.badge-top-right:before {
+    left: auto;
+    right: 25px;
+    background-color: green;
+    z-index: 10;
+    position: absolute;
+    color: #212529
+}
+
+
+.quantity {
+    margin: 0 auto !important;
+  }
+  .quantity input {
+    width: 50px !important;
+    text-align: center !important;
+    font-size: 16px !important;
+    color: rgb(39, 41, 43) !important;
+    font-weight: 300 !important;
+  }
+   
+  .btn.cartbtn {
+    width: 30px !important;
+    height: 30px !important;
+    background-color: rgb(194, 190, 187) !important;
+    border-radius: 6px !important;
+    border: none !important;
+    cursor: pointer !important;
+  }
+
+#imgpanel{
+    height: 120px;
+    width: 120px;
+}
+

@@ -1,47 +1,43 @@
 angular.module('MyApp')
-	.controller('LoginController', function ($scope, $http, $route, $location, $window, $timeout) {
+	.controller('LoginController', ['$scope','$http','$route','$location','$window', '$timeout', 'Upload',function ($scope, $http, $route, $location, $window, $timeout,Upload) {
 
 
 		M.AutoInit();
-		
 
-		$scope.openNav = function() {
+
+		$scope.openNav = function () {
 			document.getElementById("mySidenav").style.width = "250px";
-		  }
-		  
-		  $scope.closeNav = function() {
-			document.getElementById("mySidenav").style.width = "0";
-		  }
-		  
+		}
 
-		  $scope.HitNav = function() {
-			if(document.getElementById("mySidenav").style.width == '' || document.getElementById("mySidenav").style.width == '0px')
-			{
-			  $scope.openNav()
+		$scope.closeNav = function () {
+			document.getElementById("mySidenav").style.width = "0";
+		}
+
+
+		$scope.HitNav = function () {
+			if (document.getElementById("mySidenav").style.width == '' || document.getElementById("mySidenav").style.width == '0px') {
+				$scope.openNav()
+			} else {
+				$scope.closeNav();
 			}
-			else
-			{
-			  $scope.closeNav();
+
+		}
+		$(document).click(function (e) {
+			if ($(e.target).is('.container,.container *')) {
+				$scope.closeNav();
+			} else {
+
 			}
-			  
-			  }
-			  $(document).click(function(e){
-				if ($(e.target).is('.container,.container *')) {
-				  $scope.closeNav();
-				}
-				else
-				{
-				 
-				}
-			});
-				
-			  
-			  $scope.NotificationsList = []
-			  for(var i = 0 ; i < 15;i++)
-			  {
-				$scope.NotificationsList.push({message:"message text"+i})
-			  }
-		  
+		});
+
+
+		$scope.NotificationsList = []
+		for (var i = 0; i < 15; i++) {
+			$scope.NotificationsList.push({
+				message: "message text" + i
+			})
+		}
+
 		$timeout(function () {
 			$scope.test1 = "Hello World!";
 		}, 5000);
@@ -59,7 +55,7 @@ angular.module('MyApp')
 
 		//run!!
 
-		
+
 
 
 		$scope.paswdvsicon = "visibility";
@@ -104,22 +100,22 @@ angular.module('MyApp')
 
 
 		$scope.authUser = function () {
-			$location.path('/Dashboard');
-			// 	$http({
-			// 	method  : 'POST',
-			// 	url     : '/api/authUser',
-			// 	data    : $scope.userDetails ,
-			// 	headers : {'Content-Type': 'application/json'} 
-			// }).then(function(response) {
-			// 	if(response.data.success === true)
-			// 	{
-			// 		$location.path('/Dashboard');
-			// 	}
-			// 	if(response.data.success === false)
-			// 	{
-			// 		$scope.errormsg = response.data.message
-			// 	}
-			// });
+			// $location.path('/Dashboard');
+			$http({
+				method: 'POST',
+				url: '/api/authUser',
+				data: $scope.userDetails,
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			}).then(function (response) {
+				if (response.data.success === true) {
+					$location.path('/Dashboard');
+				}
+				if (response.data.success === false) {
+					$scope.errormsg = response.data.message
+				}
+			});
 		};
 
 
@@ -246,7 +242,39 @@ angular.module('MyApp')
 			document.getElementById("imgpanel").src = '';
 		};
 
-	}).directive('customAutofocus', function () {
+		//COMPANY DETAILS
+
+		$scope.SaveCompanyDetails = function()
+		{
+			if ($scope.companydetails.file.$valid && $scope.logo) {
+				var passeddata = {file: $scope.logo, companyDetails:$scope.CompanyDetails[0]}
+			}
+			else
+			{
+				 var passeddata = {companyDetails:$scope.CompanyDetails[0]}
+			}
+		   Upload.upload({
+			   url: '/api/SaveCompanyData',
+			   data: passeddata
+		   }).then(function (resp) {
+			   Swal({
+				type: resp.data.type,
+				title: resp.data.title,
+				text: resp.data.message,
+			  }).then(() => {
+				location.reload();
+			  })
+		   }, function (resp) {
+			   alert('Something went wrong, Please try again!');
+		   }, function (evt) {
+			   var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+			  // console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+		   }); 
+		};
+
+
+
+	}]).directive('customAutofocus', function () {
 		return {
 			restrict: 'A',
 

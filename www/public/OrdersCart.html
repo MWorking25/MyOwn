@@ -1,25 +1,71 @@
 <main ng-controller="ProductController">
-    <div ng-include="'public/Mainmenu.html'"></div>
-    <div class="row ml-lg-1 ml-md-1">
-        <div class="col s12 m12">
-                hjdvdhj
+  <div ng-include="'public/Mainmenu.html'"></div>
+  <div class="row ml-lg-1 ml-md-1">
+
+    <div class="col s9 m9"> <input type="text" class="col m4 s12" placeholder="Search" ng-model="search"></div>
+    <div class="col s3 m3"><button data-target="modalConfirmCart" class="btn-floating  modal-trigger btn-large waves-effect waves-light red right mt-2"
+        ng-disabled="CartList.length === 0"><i class="fa fa-shopping-basket" aria-hidden="true"></i></button><span
+        class="new badge">{{CartList.length}}</span></div>
+
+
+    <div class="col s6 m2 " ng-repeat="data in NotificationsList | filter:search">
+      <div class="card  grey lighten-5">
+        <div class="card-content black-text carticons" style="background-image: url(../images/carticons/book.png)">
+          <span class="card-title">{{data.message}}</span>
+
         </div>
-        <div class="row">
-                <div class="col s6 m2 " ng-repeat="data in NotificationsList">
-                  <div class="card  grey lighten-5">
-                    <div class="card-content black-text carticons" style="background-image: url(../images/carticons/book.png)">
-                      <span class="card-title">{{data.message}}</span>
-                     
-                    </div>
-                    <div class="card-action">
-                            <span class="card-title">Slot: {{$index +1}}</span><br>
-                      <div class="col s12">
-                          
-                      </div>>
-                    </div>
-                  </div>
-                </div>
-              </div>
-       
+        <div class="card-action">
+          <a href="">Slot: {{$index +1}}</a>
+          <div class="quantity ml-auto mr-auto text-nowrap">
+            <a class="waves-effect waves-light btn btn-small btn-floating cartbtn plus-btn" ng-click="Updatecart('add',data)"><i
+                class="material-icons left">add</i></a>
+            <input type="text" name="name" ng-model="data.qty">
+            <a class="waves-effect waves-light btn btn-small btn-floating cartbtn minus-btn" ng-disabled="(!data.qty || data.qty == 0)"
+              ng-click="Updatecart('remove',data)"><i class="material-icons left">remove</i></a>
+          </div>
+
+        </div>
+      </div>
     </div>
+
+    <!-- Modal Structure -->
+    <div id="modalConfirmCart" class="modal modal-fixed-footer">
+      <div class="modal-content">
+        <h4>Confirm Order</h4>
+
+        <div class="row">
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <th>#</th>
+                <th>Product</th>
+                <th>Qty.</th>
+              </thead>
+              <tbody>
+                <tr ng-repeat="objs in CartList">
+                  <td>{{$index +1}}</td>
+                  <td>{{objs.message}}</td>
+                  <td>
+                    <div class="quantity ml-auto mr-auto text-nowrap">
+                      <a class="waves-effect waves-light btn btn-small btn-floating cartbtn plus-btn" ng-click="Updatecart('add',objs)"><i
+                          class="material-icons left">add</i></a>
+                      <input type="text" name="name" ng-model="objs.qty">
+                      <a class="waves-effect waves-light btn btn-small btn-floating cartbtn minus-btn" ng-disabled="(!objs.qty || objs.qty == 0)"
+                        ng-click="Updatecart('remove',objs)"><i class="material-icons left">remove</i></a>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <a href="" class="modal-close waves-effect waves-green btn-flat">Close</a> <a href="" class="modal-close waves-effect waves-green btn-flat"
+          ng-disabled="CartList.length === 0">Confirm</a>
+      </div>
+    </div>
+
+  </div>
 </main>
