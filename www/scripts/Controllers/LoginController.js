@@ -1,9 +1,19 @@
 angular.module('MyApp')
-	.controller('LoginController', ['$scope','$http','$route','$location','$window', '$timeout', 'Upload',function ($scope, $http, $route, $location, $window, $timeout,Upload) {
+	.controller('LoginController', ['$scope', '$http', '$route', '$location', '$window', '$timeout', 'Upload', function ($scope, $http, $route, $location, $window, $timeout, Upload) {
 
 
 		M.AutoInit();
 
+		$scope.SignOut = function () {
+			$http({
+				method: 'GET',
+				url: '/api/SignOut/',
+				dataType: 'jsonp'
+			}).then(function (response) {
+				alert(response.data.message)
+				location.href = "index.html";
+			});
+		};
 
 		$scope.openNav = function () {
 			document.getElementById("mySidenav").style.width = "250px";
@@ -100,7 +110,7 @@ angular.module('MyApp')
 
 
 		$scope.authUser = function () {
-			// $location.path('/Dashboard');
+
 			$http({
 				method: 'POST',
 				url: '/api/authUser',
@@ -243,35 +253,123 @@ angular.module('MyApp')
 		};
 
 		//COMPANY DETAILS
-
-		$scope.SaveCompanyDetails = function()
-		{
-			if ($scope.companydetails.file.$valid && $scope.logo) {
-				var passeddata = {file: $scope.logo, companyDetails:$scope.CompanyDetails[0]}
-			}
-			else
-			{
-				 var passeddata = {companyDetails:$scope.CompanyDetails[0]}
-			}
-		   Upload.upload({
-			   url: '/api/SaveCompanyData',
-			   data: passeddata
-		   }).then(function (resp) {
-			   Swal({
-				type: resp.data.type,
-				title: resp.data.title,
-				text: resp.data.message,
-			  }).then(() => {
-				location.reload();
-			  })
-		   }, function (resp) {
-			   alert('Something went wrong, Please try again!');
-		   }, function (evt) {
-			   var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-			  // console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
-		   }); 
+		$scope.GetCompanyDetails = function (companyid) {
+			$http({
+				method: 'GET',
+				url: '/api/GetCompanyDetails/' + companyid,
+				dataType: 'jsonp'
+			}).then(function (response) {
+				$scope.CompanyDetails = response.data;
+				console.log($scope.CompanyDetails)
+			});
 		};
 
+		$scope.DeleteCompanyDetails = function (companyid) {
+
+			Swal({
+				title: 'Are you sure?',
+				text: "You won't be able to revert this!",
+				type: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Yes, delete it!'
+			}).then((result) => {
+				if (result.value) {
+					$http({
+						method: 'DELETE',
+						url: '/api/DeleteCompanyDetails/' + companyid,
+						dataType: 'jsonp'
+					}).then(function (response) {
+						Swal({
+							type: response.data.type,
+							title: response.data.title,
+							text: response.data.message,
+						}).then(() => {
+							location.reload();
+						})
+					});
+				}
+			})
+		};
+
+
+		$scope.ListCompanyies = function () {
+			$http({
+				method: 'GET',
+				url: '/api/ListCompanyies/',
+				dataType: 'jsonp'
+			}).then(function (response) {
+				$scope.CompanysList = response.data;
+			});
+		};
+
+
+
+		$scope.SaveCompanyDetails = function () {
+			if ($scope.companydetails.file.$valid && $scope.logo) {
+				var passeddata = {
+					file: $scope.logo,
+					companyDetails: $scope.CompanyDetails[0]
+				}
+			} else {
+				var passeddata = {
+					companyDetails: $scope.CompanyDetails[0]
+				}
+			}
+			Upload.upload({
+				url: '/api/SaveCompanyData',
+				data: passeddata
+			}).then(function (resp) {
+				Swal({
+					type: resp.data.type,
+					title: resp.data.title,
+					text: resp.data.message,
+				}).then(() => {
+					location.reload();
+				})
+			}, function (resp) {
+				Swal({
+					type: resp.data.type,
+					title: resp.data.title,
+					text: resp.data.message,
+				}).then(() => {
+
+				})
+			}, function (evt) {
+				var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+				// console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+			});
+		};
+
+
+		$scope.ValidateEmail = function () {
+			$http({
+				method: 'GET',
+				url: '/api/ValidateEmail/' + $scope.CompanyDetails[0].email,
+				dataType: 'jsonp'
+			}).then(function (response) {
+				console.log(response)
+				$scope.emailvalidatemessage = response.data.message;
+				$scope.emailvalidatests = response.data.status;
+				if ($scope.emailvalidatests === 2) {
+					$scope.SaveCompanyDetails();
+				}
+			});
+		};
+
+
+		function getCoockies() {
+			$http({
+				method: 'GET',
+				url: '/api/getCoockies/',
+				dataType: 'jsonp'
+			}).then(function (response) {
+				$scope.credentials = response.data;
+			});
+		};
+
+		getCoockies();
 
 
 	}]).directive('customAutofocus', function () {

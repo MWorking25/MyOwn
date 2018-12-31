@@ -1,7 +1,21 @@
-angular.module('MyApp').controller('ProductController', function ($scope, $http, $route, $location, $window, $timeout) {
+angular.module('MyApp').controller('ProductController',  ['$scope', '$http', '$route', '$location', '$window', '$timeout', 'Upload', function ($scope, $http, $route, $location, $window, $timeout, Upload) {
+
 
 
   M.AutoInit();
+
+  $scope.SignOut = function () {
+    $http({
+      method: 'GET',
+      url: '/api/SignOut/',
+      dataType: 'jsonp'
+    }).then(function (response) {
+      alert(response.data.message)
+      location.href = "index.html";
+    });
+  };
+
+
   $scope.openNav = function () {
     document.getElementById("mySidenav").style.width = "250px";
   }
@@ -70,18 +84,150 @@ angular.module('MyApp').controller('ProductController', function ($scope, $http,
         }
       });
     }
-    console.log($scope.CartList)
   };
 
-  $scope.BrandsList = [{
-    id: 1,
-    name: 'brand 1',
-    description: 'n.a'
-  }, {
-    id: 2,
-    name: 'brand 2',
-    description: 'n.a'
-  }];
+
+
+
+  // BRANDS
+
+  $scope.ListBrands = function () {
+    $http({
+      method: 'GET',
+      url: '/api/ListBrands/',
+      dataType: 'jsonp'
+    }).then(function (response) {
+      $scope.BrandsList = response.data;
+    });
+  };
+
+
+  $scope.getBrandDetails = function (brandid) {
+    $http({
+      method: 'GET',
+      url: '/api/getBrandDetails/' + brandid,
+      dataType: 'jsonp'
+    }).then(function (response) {
+      $scope.brandDetails = response.data;
+    });
+  };
+
+
+  $scope.DeleteBrandDetails = function (brandid) {
+
+    Swal({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.value) {
+        $http({
+          method: 'GET',
+          url: '/api/DeleteBrandDetails/' + brandid,
+          dataType: 'jsonp'
+        }).then(function (response) {
+          Swal({
+            type: response.data.type,
+            title: response.data.title,
+            text: response.data.message,
+          }).then(() => {
+            $scope.ListBrands();
+          })
+        });
+      }
+    })
+
+
+  };
+
+  $scope.SaveBrandDetails = function () {
+    $http({
+      method: 'POST',
+      url: '/api/SaveBrandDetails',
+      data: $scope.brandDetails,
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(function (response) {
+      Swal({
+        type: response.data.type,
+        title: response.data.title,
+        text: response.data.message,
+      }).then(() => {
+        location.reload();
+      })
+    });
+  };
+
+
+
+  // PRODUCTS
+
+  $scope.ListProducts = function()
+  {
+    $http({
+      method: 'GET',
+      url: '/api/ListProducts/',
+      dataType: 'jsonp'
+    }).then(function (response) {
+      $scope.ProductsList = response.data;
+    });
+  };
+
+  $scope.GetProductDetails = function(productid)
+  {
+    $http({
+      method: 'GET',
+      url: '/api/GetProductDetails/'+productid,
+      dataType: 'jsonp'
+    }).then(function (response) {
+      $scope.ProductDetails = response.data;
+    });
+  };
+
+
+
+  $scope.SaveProductDetails = function()
+  {
+    if ($scope.productsdetails.file.$valid && $scope.prdimage) {
+      var passeddata = {
+        file: $scope.prdimage,
+        productDetails: $scope.ProductDetails[0]
+      }
+    } else {
+      var passeddata = {
+        productDetails: $scope.ProductDetails[0]
+      }
+    }
+    Upload.upload({
+      url: '/api/SaveProductDetails',
+      data: passeddata
+    }).then(function (resp) {
+      Swal({
+        type: resp.data.type,
+        title: resp.data.title,
+        text: resp.data.message,
+      }).then(() => {
+        location.reload();
+      })
+    }, function (resp) {
+      Swal({
+        type: resp.data.type,
+        title: resp.data.title,
+        text: resp.data.message,
+      }).then(() => {
+
+      })
+    }, function (evt) {
+      var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+      // console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+    });
+  };
+
 
 
   function readURL(input) {
@@ -105,4 +251,19 @@ angular.module('MyApp').controller('ProductController', function ($scope, $http,
     document.getElementById("imgpanel").src = '';
   };
 
-});
+
+  function getCoockies() {
+    $http({
+      method: 'GET',
+      url: '/api/getCoockies/',
+      dataType: 'jsonp'
+    }).then(function (response) {
+      $scope.credentials = response.data;
+    });
+  };
+
+  getCoockies();
+
+
+
+}]);

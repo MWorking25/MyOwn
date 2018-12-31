@@ -1,7 +1,7 @@
    
 
  <div class="navbar-fixed"   ng-controller="DashboardController">
-     <nav>
+     <nav ng-init="GetUserRole()">
     <div class="nav-wrapper">
         <a href="#" class="brand-logo center">Logo</a>
         <ul id="nav-mobile" class="left hide-on-large-only">
@@ -17,14 +17,14 @@
         </ul>
         <ul id="nav-mobile3" class="right">
                 <li ng-click="HitNav()"><a><i class="material-icons" ng-class="{badge:NotificationsList.length >= 1}" >notifications</i></a></li>
-                <li><a href=""><i class="material-icons">power_settings_new</i></a></li>
+                <li ng-click="SignOut()"><a href="" ><i class="material-icons">power_settings_new</i></a></li>
         </ul>
         <ul id="nav-mobile3" class="right hide-on-med-and-down">
                 <li><a href="#!Sales">Sale</a></li>
                 <li><a href="#!Purchase">Purchase</a></li>
                 <li><a href="#!Inventory">Inventory</a></li>
                 <li><a href="#!Inquiries">Inquiries</a></li>
-                <li><a href="#!Companies">Companies</a></li>
+                <li ng-if="credentials.role === 'Superadmin'"><a href="#!Companies">Companies</a></li>
                 <li><a href="#!Profile">Profile</a></li>
         </ul>
        
@@ -39,8 +39,8 @@
                 <img src="../images/books.jpg">
             </div>
             <a href="#user"><img class="circle" src="https://www.w3schools.com/w3images/avatar2.png"></a>
-            <a href="#name"><span class="white-text name">John Doe</span></a>
-            <a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a>
+            <a href="#name"><span class="white-text name">{{credentials.name}}</span></a>
+            <a href="#email"><span class="white-text email">{{credentials.role}}</span></a>
         </div>
     </li>
     <li><a href="#!Profile" class="waves-effect"><i class="material-icons">face</i>Profile</a></li>
@@ -48,7 +48,7 @@
         <div class="divider"></div>
     </li>
     <li><a href="#!Dashboard" class="waves-effect"><i class="material-icons">home</i>Home</a></li>
-    <li><a href="#!OrdersCart">Orders Cart</a></li>
+    <li><a href="#!OrdersCart"><i class="material-icons">shopping_cart</i>Orders Cart</a></li>
     <li><a href="#!Brands" class="waves-effect"><i class="material-icons">branding_watermark</i>Brands</a></li>
     <li><a href="#!Products" class="waves-effect"><i class="material-icons">view_module</i>Products</a></li>
     <li><a href="#!Users" class="waves-effect"><i class="material-icons">people</i>Users</a></li>
@@ -56,6 +56,7 @@
     <li><a href="#!Sales" class="waves-effect"><i class="material-icons">shopping_cart</i>Sale</a></li>
     <li><a href="#!Purchase" class="waves-effect"><i class="material-icons">note</i>Purchase</a></li>
     <li><a href="#!Inventory" class="waves-effect"><i class="material-icons">list</i>Inventory</a></li>
+    <li ng-if="credentials.role === 'Superadmin'"><a href="#!Companies" class="waves-effect"><i class="material-icons">store</i>Companies</a></li>
     <li><a href="#!Inquiries" class="waves-effect"><i class="material-icons">help</i>Inquiries</a></li>
 </ul>
 

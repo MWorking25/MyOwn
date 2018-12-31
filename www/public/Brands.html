@@ -1,7 +1,7 @@
 <main ng-controller="ProductController">
     <div ng-include="'public/Mainmenu.html'"></div>
     <div class="row ml-lg-1 ml-md-1">
-        <div class="col s12 m12">
+        <div class="col s12 m12" ng-init="ListBrands()">
             <h5>Brands</h5>
         </div>
         <div class="col m2 s3">
@@ -27,7 +27,7 @@
                               </label></td>
                         <td>{{data.name}}</td>
                         <td>{{data.description}}</td>
-                        <td class="text-nowrap text-center"><a class="btn amber" ng-click="getBrandDetails(data.id)">Edit</a> | <a class="btn red" ng-click="DeleteBrandDetails(data.id)">Delete</a></td>
+                        <td class="text-nowrap text-center"><a class="btn amber modal-trigger" data-target="BrandDetails" ng-click="getBrandDetails(data.id)">Edit</a> | <a class="btn red" ng-click="DeleteBrandDetails(data.id)">Delete</a></td>
                     </tr>
                 </tbody>
 

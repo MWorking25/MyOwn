@@ -4,7 +4,7 @@
         <div class="col s12 m12">
             <h5>Companies</h5>
         </div>
-        <div class="col m2 s3">
+        <div class="col m2 s3" ng-init="ListCompanyies()">
             <a class="waves-effect waves-light btn modal-trigger" data-target="CompanyDetails">Add New</a>
         </div>
         <div class="col m3 s9 right">
@@ -30,8 +30,8 @@
                             <td>{{data.name}}</td>
                             <td>{{data.owner}}</td>
                             <td>{{data.email}}</td>
-                            <td>{{data.mobile}}</td>
-                            <td class="text-nowrap text-center"><a class="btn amber" ng-click="GetCompanyDetails(data.id)">Edit</a>
+                            <td>{{data.mobile1}}</td>
+                            <td class="text-nowrap text-center"><a class="btn amber modal-trigger" data-target="CompanyDetails" ng-click="GetCompanyDetails(data.id)">Edit</a>
                                 | <a class="btn red" ng-click="DeleteCompanyDetails(data.id)">Delete</a></td>
                         </tr>
                     </tbody>
@@ -56,8 +56,9 @@
                         <label for="owner">Owner</label>
                     </div>
                     <div class="input-field col s12 m6">
-                        <input id="email" type="email" class="validate" ng-model="CompanyDetails[0].email" required>
+                        <input id="email" type="email" class="validate" ng-model="CompanyDetails[0].email"  required>
                         <label for="email">Email</label>
+                        <span class="red-text">{{emailvalidatemessage}}</span>
                     </div>
                     <div class="input-field col s12 m3">
                         <input id="mobile" type="number" class="validate" ng-model="CompanyDetails[0].mobile1" required>
@@ -109,13 +110,26 @@
                                 <button class="imgbtn btn grey" ng-click="clear()">Clear</button>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col s12 m6">
+                                <label>
+                                        <input name="group1" type="radio" ng-value="1" ng-model="CompanyDetails[0].approval" />
+                                        <span>Approve</span>
+                                      </label>
+
+                                      <label>
+                                            <input name="group1" type="radio" ng-value="0" ng-model="CompanyDetails[0].approval" />
+                                            <span>Decline</span>
+                                          </label>
+                        </div>
+                        </div>
 
 
             </form>
         </div>
         <div class="modal-footer">
             <a href="" class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>
-            <a href="" ng-click="SaveCompanyDetails()" ng-disabled="companydetails.$invalid" class="modal-action modal-close waves-effect waves-green btn-flat">Submit</a>
+            <a href="" ng-click="ValidateEmail()" ng-disabled="companydetails.$invalid" class="waves-effect waves-green btn-flat">Submit</a>
         </div>
     </div>
 </main>
