@@ -27,7 +27,7 @@
                                     <input type="checkbox" ng-model="data.bool" />
                                     <span>{{$index +1}}</span>
                                 </label></td>
-                                <td>{{data.brand}}</td>
+                                <td>{{data.brandname}}</td>
                             <td>{{data.name}}</td>
                             <td>{{data.slot}}</td>
                             <td>{{data.mrp}}</td>
@@ -75,7 +75,7 @@
                                         <div class="btn">
                                           <span>File</span>
                                           <input type="file" id="imgInp" ngf-select ng-model="prdimage" name="file" ngf-pattern="'image/*'"
-                                          ngf-accept="'image/*'" ngf-max-size="20MB" ngf-min-height="100" 
+                                          ngf-accept="'image/*'" ngf-max-size="20MB"  
                                           ngf-resize="{width: 100, height: 100}">
                                         </div>
                                         <div class="file-path-wrapper">
@@ -84,7 +84,7 @@
                                       </div>
                         </div>
                         <div class="col s12 m12">
-                                <img id="imgpanel" src="uploads/{{ProductDetails[0].img}}"  />
+                                <img id="imgpanel" src="uploads/{{ProductDetails[0].imgfile}}"  />
                                 <button class="imgbtn btn grey" ng-click="clear()">Clear</button>
                         </div>
                     </div>

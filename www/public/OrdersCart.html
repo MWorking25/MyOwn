@@ -1,6 +1,6 @@
 <main ng-controller="ProductController">
   <div ng-include="'public/Mainmenu.html'"></div>
-  <div class="row ml-lg-1 ml-md-1">
+  <div class="row ml-lg-1 ml-md-1" ng-init="ListBrands();ListProducts();">
 
     <div class="col s9 m9"> <input type="text" class="col m4 s12" placeholder="Search" ng-model="search"></div>
     <div class="col s3 m3"><button data-target="modalConfirmCart" class="btn-floating  modal-trigger btn-large waves-effect waves-light red right mt-2"
@@ -8,14 +8,15 @@
         class="new badge">{{CartList.length}}</span></div>
 
 
-    <div class="col s6 m2 " ng-repeat="data in NotificationsList | filter:search">
+    <div class="col s6 m2 " ng-repeat="data in ProductsList | filter:search">
       <div class="card  grey lighten-5">
-        <div class="card-content black-text carticons" style="background-image: url(../images/carticons/book.png)">
-          <span class="card-title">{{data.message}}</span>
-
+        <div class="card-content black-text carticons" style="background-image: url(../uploads/{{data.imgfile}})">
+          <span class="card-title">{{data.name}}</span>
+          <span class="card-title">{{data.brandname}}</span>
         </div>
         <div class="card-action">
-          <a href="">Slot: {{$index +1}}</a>
+          <a href="">Slot: {{data.slot}}</a>
+          <a href="" class="text-right">{{data.mrp |number:2}}/-</a>
           <div class="quantity ml-auto mr-auto text-nowrap">
             <a class="waves-effect waves-light btn btn-small btn-floating cartbtn plus-btn" ng-click="Updatecart('add',data)"><i
                 class="material-icons left">add</i></a>
@@ -32,19 +33,44 @@
     <div id="modalConfirmCart" class="modal modal-fixed-footer">
       <div class="modal-content">
         <h4>Confirm Order</h4>
-
+        <div class="row">
+          <div class="col s12 m4">
+            <div class="input-field">
+              <input id="name" type="text" class="validate" ng-model="CartList[0].customername">
+              <label for="name">Name</label>
+            </div>
+          </div>
+          <div class="col s12 m4">
+            <div class="input-field">
+              <input id="mobile" type="number" class="validate" ng-model="CartList[0].mobileno">
+              <label for="mobile">Mobile No.</label>
+            </div>
+          </div>
+          <div class="col s12 m4">
+            <div class="input-field">
+              <input id="email" type="email" class="validate" ng-model="CartList[0].email">
+              <label for="email">Email</label>
+            </div>
+          </div>
+          <div class="input-field col s12 m12">
+            <textarea id="address" class="materialize-textarea" ng-model="CartList[0].address"></textarea>
+            <label for="address">Address</label>
+          </div>
+        </div>
         <div class="row">
           <div class="table-responsive">
             <table class="table">
               <thead>
                 <th>#</th>
                 <th>Product</th>
+                <th>Net Amt.</th>
                 <th>Qty.</th>
               </thead>
               <tbody>
                 <tr ng-repeat="objs in CartList">
                   <td>{{$index +1}}</td>
-                  <td>{{objs.message}}</td>
+                  <td>{{objs.name}} - {{objs.mrp|number:2}}</td>
+                  <td>{{objs.mrp * objs.qty |number:2}}</td>
                   <td>
                     <div class="quantity ml-auto mr-auto text-nowrap">
                       <a class="waves-effect waves-light btn btn-small btn-floating cartbtn plus-btn" ng-click="Updatecart('add',objs)"><i
@@ -62,8 +88,20 @@
 
       </div>
       <div class="modal-footer">
-        <a href="" class="modal-close waves-effect waves-green btn-flat">Close</a> <a href="" class="modal-close waves-effect waves-green btn-flat"
-          ng-disabled="CartList.length === 0">Confirm</a>
+
+        <div class="col s4 m4">
+          <span class=""><b>Total: {{(CalculateNetamount()|number:2 )||'00.00'}}</b></span>
+        </div>
+        <div class="col s8 m8">
+            <span class=""><b>Paid Amount:</b> <input type="number" class="validate" placeholder="Paid Amount" ng-model="CartList[0].paidamount"></span>
+          </div>
+        <div class="col s12 m12">
+          <div class="row">
+            <a href="" class="modal-close waves-effect waves-green btn-flat">Close</a> <a href="" class="modal-close waves-effect waves-green btn-flat"
+              ng-disabled="CartList.length === 0" ng-click="SubmitOrder()">Confirm</a>
+          </div>
+        </div>
+
       </div>
     </div>
 

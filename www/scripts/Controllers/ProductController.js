@@ -1,4 +1,4 @@
-angular.module('MyApp').controller('ProductController',  ['$scope', '$http', '$route', '$location', '$window', '$timeout', 'Upload', function ($scope, $http, $route, $location, $window, $timeout, Upload) {
+angular.module('MyApp').controller('ProductController', ['$scope', '$http', '$route', '$location', '$window', '$timeout', 'Upload', function ($scope, $http, $route, $location, $window, $timeout, Upload) {
 
 
 
@@ -87,6 +87,34 @@ angular.module('MyApp').controller('ProductController',  ['$scope', '$http', '$r
   };
 
 
+  $scope.CalculateNetamount = function () {
+    var netamount = 0;
+    $scope.CartList.map(function (value, index) {
+      netamount += (value.mrp * value.qty);
+    });
+    return netamount;
+  };
+
+
+  $scope.SubmitOrder = function () {
+    $scope.CartList[0].netamount = $scope.CalculateNetamount();
+    $http({
+      method: 'POST',
+      url: '/api/SubmitOrder',
+      data: $scope.CartList,
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(function (response) {
+      Swal({
+        type: response.data.type,
+        title: response.data.title,
+        text: response.data.message,
+      }).then(() => {
+        location.reload();
+      })
+    });
+  };
 
 
   // BRANDS
@@ -126,7 +154,7 @@ angular.module('MyApp').controller('ProductController',  ['$scope', '$http', '$r
     }).then((result) => {
       if (result.value) {
         $http({
-          method: 'GET',
+          method: 'DELETE',
           url: '/api/DeleteBrandDetails/' + brandid,
           dataType: 'jsonp'
         }).then(function (response) {
@@ -167,8 +195,7 @@ angular.module('MyApp').controller('ProductController',  ['$scope', '$http', '$r
 
   // PRODUCTS
 
-  $scope.ListProducts = function()
-  {
+  $scope.ListProducts = function () {
     $http({
       method: 'GET',
       url: '/api/ListProducts/',
@@ -178,11 +205,10 @@ angular.module('MyApp').controller('ProductController',  ['$scope', '$http', '$r
     });
   };
 
-  $scope.GetProductDetails = function(productid)
-  {
+  $scope.GetProductDetails = function (productid) {
     $http({
       method: 'GET',
-      url: '/api/GetProductDetails/'+productid,
+      url: '/api/GetProductDetails/' + productid,
       dataType: 'jsonp'
     }).then(function (response) {
       $scope.ProductDetails = response.data;
@@ -191,8 +217,38 @@ angular.module('MyApp').controller('ProductController',  ['$scope', '$http', '$r
 
 
 
-  $scope.SaveProductDetails = function()
-  {
+  $scope.DeleteProductDetails = function (productid) {
+    Swal({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.value) {
+        $http({
+          method: 'DELETE',
+          url: '/api/DeleteProductDetails/' + productid,
+          dataType: 'jsonp'
+        }).then(function (response) {
+          Swal({
+            type: response.data.type,
+            title: response.data.title,
+            text: response.data.message,
+          }).then(() => {
+            $scope.ListBrands();
+            $scope.ListProducts();
+          })
+        });
+      }
+    })
+
+
+  };
+
+  $scope.SaveProductDetails = function () {
     if ($scope.productsdetails.file.$valid && $scope.prdimage) {
       var passeddata = {
         file: $scope.prdimage,
@@ -220,7 +276,7 @@ angular.module('MyApp').controller('ProductController',  ['$scope', '$http', '$r
         title: resp.data.title,
         text: resp.data.message,
       }).then(() => {
-
+        location.reload();
       })
     }, function (evt) {
       var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
