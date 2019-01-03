@@ -1,6 +1,6 @@
 <main ng-controller="ProductController">
         <div ng-include="'public/Mainmenu.html'"></div>
-        <div class="row ml-lg-1 ml-md-1">
+        <div class="row ml-lg-1 ml-md-1" ng-init="ListInquiries()">
             <div class="col s12 m12">
                 <h5>Inquiries</h5>
             </div>
@@ -27,7 +27,7 @@
                                   </label></td>
                             <td>{{data.name}}</td>
                             <td>{{data.description}}</td>
-                            <td class="text-nowrap text-center"><a class="btn amber" ng-click="getInquiryDetails(data.id)">Edit</a> | <a class="btn red" ng-click="DeleteInquiryDetails(data.id)">Delete</a></td>
+                            <td class="text-nowrap text-center"><a class="btn amber modal-trigger" data-target="InquiryDetails" ng-click="GetInquiryDetails(data.id)">Edit</a> | <a class="btn red" ng-click="DeleteInquiryDetails(data.id)">Delete</a></td>
                         </tr>
                     </tbody>
     

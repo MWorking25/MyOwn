@@ -80,7 +80,6 @@ angular.module('MyApp').controller('ProductController', ['$scope', '$http', '$ro
           if ($scope.CartList[index].qty === 0) {
             $scope.CartList.splice(index, 1)
           }
-
         }
       });
     }
@@ -171,7 +170,9 @@ angular.module('MyApp').controller('ProductController', ['$scope', '$http', '$ro
 
 
   };
-
+  
+  
+  
   $scope.SaveBrandDetails = function () {
     $http({
       method: 'POST',
@@ -192,6 +193,157 @@ angular.module('MyApp').controller('ProductController', ['$scope', '$http', '$ro
   };
 
 
+//CUSTOMERS
+
+$scope.ListCustomers = function () {
+  $http({
+    method: 'GET',
+    url: '/api/ListCustomers/',
+    dataType: 'jsonp'
+  }).then(function (response) {
+    $scope.CustomersList = response.data;
+  });
+};
+
+$scope.GetCustomerDetails = function (customerid) {
+  $http({
+    method: 'GET',
+    url: '/api/GetCustomerDetails/'+customerid,
+    dataType: 'jsonp'
+  }).then(function (response) {
+    $scope.CustomerDetails = response.data;
+    if($scope.CartList.length > 0)
+    {
+      $scope.CartList[0].mobileno = $scope.CustomerDetails[0].mobile;
+      $scope.CartList[0].email = $scope.CustomerDetails[0].email;
+      $scope.CartList[0].address = $scope.CustomerDetails[0].address;
+    }
+  });
+};
+
+$scope.SaveCustomerDetails = function()
+{
+	$http({
+      method: 'POST',
+      url: '/api/SaveCustomerDetails',
+      data: $scope.CustomerDetails,
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(function (response) {
+      Swal({
+        type: response.data.type,
+        title: response.data.title,
+        text: response.data.message,
+      }).then(() => {
+        location.reload();
+      })
+    });
+};
+
+$scope.DeleteCustomerDetails = function (custid) {
+
+    Swal({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.value) {
+        $http({
+          method: 'DELETE',
+          url: '/api/DeleteCustomerDetails/' + custid,
+          dataType: 'jsonp'
+        }).then(function (response) {
+          Swal({
+            type: response.data.type,
+            title: response.data.title,
+            text: response.data.message,
+          }).then(() => {
+            $scope.ListCustomers();
+          })
+        });
+      }
+    })
+
+
+  };
+  
+  // INQUIRIES
+  
+$scope.ListInquiries = function () {
+  $http({
+    method: 'GET',
+    url: '/api/ListInquiries/',
+    dataType: 'jsonp'
+  }).then(function (response) {
+    $scope.InquirysList = response.data;
+  });
+};
+
+$scope.GetInquiryDetails = function (inquiryid) {
+  $http({
+    method: 'GET',
+    url: '/api/GetInquiryDetails/'+inquiryid,
+    dataType: 'jsonp'
+  }).then(function (response) {
+    $scope.InquiryDetails = response.data;
+  });
+};
+
+$scope.SaveInquiryDetails = function()
+{
+	$http({
+      method: 'POST',
+      url: '/api/SaveInquiryDetails',
+      data: $scope.InquiryDetails,
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(function (response) {
+      Swal({
+        type: response.data.type,
+        title: response.data.title,
+        text: response.data.message,
+      }).then(() => {
+        location.reload();
+      })
+    });
+};
+
+$scope.DeleteInquiryDetails = function (inquiryid) {
+
+    Swal({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.value) {
+        $http({
+          method: 'DELETE',
+          url: '/api/DeleteInquiryDetails/' + inquiryid,
+          dataType: 'jsonp'
+        }).then(function (response) {
+          Swal({
+            type: response.data.type,
+            title: response.data.title,
+            text: response.data.message,
+          }).then(() => {
+            $scope.ListInquiries();
+          })
+        });
+      }
+    })
+
+
+  };
 
   // PRODUCTS
 
@@ -214,8 +366,6 @@ angular.module('MyApp').controller('ProductController', ['$scope', '$http', '$ro
       $scope.ProductDetails = response.data;
     });
   };
-
-
 
   $scope.DeleteProductDetails = function (productid) {
     Swal({
@@ -244,8 +394,6 @@ angular.module('MyApp').controller('ProductController', ['$scope', '$http', '$ro
         });
       }
     })
-
-
   };
 
   $scope.SaveProductDetails = function () {

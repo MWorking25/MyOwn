@@ -1,6 +1,6 @@
 <main ng-controller="ProductController">
   <div ng-include="'public/Mainmenu.html'"></div>
-  <div class="row ml-lg-1 ml-md-1" ng-init="ListBrands();ListProducts();">
+  <div class="row ml-lg-1 ml-md-1" ng-init="ListBrands();ListProducts();ListCustomers();">
 
     <div class="col s9 m9"> <input type="text" class="col m4 s12" placeholder="Search" ng-model="search"></div>
     <div class="col s3 m3"><button data-target="modalConfirmCart" class="btn-floating  modal-trigger btn-large waves-effect waves-light red right mt-2"
@@ -34,9 +34,10 @@
       <div class="modal-content">
         <h4>Confirm Order</h4>
         <div class="row">
+          <form name="customer">
           <div class="col s12 m4">
             <div class="input-field">
-              <input id="name" type="text" class="validate" ng-model="CartList[0].customername">
+              <input id="name" type="text" class="validate" ng-model="CartList[0].customername" uib-typeahead="custobj as (custobj.name +'-'+custobj.mobile) for custobj in CustomersList | filter:$viewValue" typeahead-on-select="GetCustomerDetails($item.id)" required>
               <label for="name">Name</label>
             </div>
           </div>
@@ -56,6 +57,7 @@
             <textarea id="address" class="materialize-textarea" ng-model="CartList[0].address"></textarea>
             <label for="address">Address</label>
           </div>
+        </form>
         </div>
         <div class="row">
           <div class="table-responsive">
@@ -93,12 +95,12 @@
           <span class=""><b>Total: {{(CalculateNetamount()|number:2 )||'00.00'}}</b></span>
         </div>
         <div class="col s8 m8">
-            <span class=""><b>Paid Amount:</b> <input type="number" class="validate" placeholder="Paid Amount" ng-model="CartList[0].paidamount"></span>
+            <div class="row right"><div class="col s6 m6"><b>Paid Amount:</b></div><div class="col s6 m6"> <input type="number" class="validate" placeholder="Paid Amount" ng-model="CartList[0].paidamount"></div></div>
           </div>
         <div class="col s12 m12">
           <div class="row">
             <a href="" class="modal-close waves-effect waves-green btn-flat">Close</a> <a href="" class="modal-close waves-effect waves-green btn-flat"
-              ng-disabled="CartList.length === 0" ng-click="SubmitOrder()">Confirm</a>
+              ng-disabled="CartList.length === 0 && customer.$invalid" ng-click="SubmitOrder()">Confirm</a>
           </div>
         </div>
 

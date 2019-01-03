@@ -1,31 +1,31 @@
 <main ng-controller="DashboardController">
     <div ng-include="'public/Mainmenu.html'"></div>
-        <div class="row mt-2 ml-lg-1 ml-md-1">
+        <div class="row mt-2 ml-lg-1 ml-md-1" ng-init="GetDashboardCount('Today')">
             <div class="col s12 m6">
                 <label>
-                    <input name="group1" type="radio" checked />
+                    <input name="group1" type="radio" ng-click="GetDashboardCount('Today')" checked />
                     <span>Today</span>
                 </label>
                 <label>
-                    <input name="group1" type="radio" />
+                    <input name="group1" type="radio" ng-click="GetDashboardCount('Week')"/>
                     <span>Week</span>
                 </label>
                 <label>
-                    <input name="group1" type="radio" />
+                    <input name="group1" type="radio" ng-click="GetDashboardCount('Month')"/>
                     <span>Month</span>
                 </label>
                 <label>
-                    <input name="group1" type="radio" />
+                    <input name="group1" type="radio" ng-click="GetDashboardCount('Year')"/>
                     <span>Year</span>
                 </label>
             </div>
             <div class="col s12 m6">
                 <div class="row">
                     <div class="col s6">
-                        <input type="text" class="datepicker" placeholder="From Date">
+                        <input type="text" class="datepicker" ng-model="fromdate" ng-click="GetDashboardCountOndates(fromdate,todate)" placeholder="From Date">
                     </div>
                     <div class="col s6">
-                        <input type="text" class="datepicker" placeholder="To Date">
+                        <input type="text" class="datepicker" ng-model="todate" ng-click="GetDashboardCountOndates(fromdate,todate)" placeholder="To Date">
                     </div>
                 </div>
             </div>
@@ -38,7 +38,7 @@
                     </div>
                     <div class="valign-wrapper ml-3">
                         <p class="flow-text">
-                            <h5 class="black-text darken-4">15</h5>
+                            <h5 class="black-text darken-4">{{DashboardCounts[0].totalbrands}}</h5>
                         </p>
                     </div>
                 </div>
@@ -52,7 +52,7 @@
                     </div>
                     <div class="valign-wrapper ml-3">
                         <p class="flow-text">
-                            <h5 class="black-text darken-4">159</h5>
+                            <h5 class="black-text darken-4">{{DashboardCounts[0].totalproducts}}</h5>
                         </p>
                     </div>
                 </div>
@@ -66,7 +66,7 @@
                     </div>
                     <div class="valign-wrapper ml-3">
                         <p class="flow-text">
-                            <h5 class="black-text darken-4">15</h5>
+                            <h5 class="black-text darken-4">{{DashboardCounts[0].totalusers}}</h5>
                         </p>
                     </div>
                 </div>
@@ -80,7 +80,7 @@
                     </div>
                     <div class="valign-wrapper ml-3">
                         <p class="flow-text">
-                            <h5 class="black-text darken-4">1,539.00/-</h5>
+                            <h5 class="black-text darken-4">{{DashboardCounts[0].totalorderamt | number:2}}</h5>
                         </p>
                     </div>
                 </div>
@@ -94,7 +94,7 @@
                     </div>
                     <div class="valign-wrapper ml-3">
                         <p class="flow-text">
-                            <h5 class="black-text darken-4">15,300.00/-</h5>
+                            <h5 class="black-text darken-4">{{DashboardCounts[0].totalpoamt | number:2}}</h5>
                         </p>
                     </div>
                 </div>
@@ -108,7 +108,7 @@
                     </div>
                     <div class="valign-wrapper ml-3">
                         <p class="flow-text">
-                            <h5 class="black-text darken-4">15</h5>
+                            <h5 class="black-text darken-4">{{DashboardCounts[0].totalcustomers}}</h5>
                         </p>
                     </div>
                 </div>
@@ -122,7 +122,7 @@
                     </div>
                     <div class="valign-wrapper ml-3">
                         <p class="flow-text">
-                            <h5 class="black-text darken-4">4</h5>
+                            <h5 class="black-text darken-4">{{DashboardCounts[0].totalinquiries}}</h5>
                         </p>
                     </div>
                 </div>

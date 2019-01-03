@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 31, 2018 at 01:25 PM
+-- Generation Time: Jan 03, 2019 at 01:29 PM
 -- Server version: 10.1.36-MariaDB
 -- PHP Version: 5.6.38
 
@@ -92,6 +92,14 @@ CREATE TABLE `cutomermaster` (
   `companyid` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `cutomermaster`
+--
+
+INSERT INTO `cutomermaster` (`id`, `name`, `mobile`, `email`, `address`, `ceateddate`, `createdby`, `companyid`) VALUES
+(1, 'Mayur Mhatre', 9768241151, 'mhatre@gmail.com', 'Pawar ngar,Thane west,400610', '2019-01-03 12:59:31', 2, 1),
+(2, 'Mayur P', 9767562526, 'pmayur@gmail.com', 'Thane', '2019-01-03 13:00:02', 2, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -117,9 +125,23 @@ CREATE TABLE `orderdetails` (
   `id` int(11) NOT NULL,
   `orderid` int(11) DEFAULT NULL,
   `productid` int(11) DEFAULT NULL,
+  `mrp` double DEFAULT NULL,
   `qty` double DEFAULT NULL,
   `freeqty` double DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `orderdetails`
+--
+
+INSERT INTO `orderdetails` (`id`, `orderid`, `productid`, `mrp`, `qty`, `freeqty`) VALUES
+(1, 1, 5, 24, 2, 0),
+(2, 1, 6, 36, 2, 0),
+(3, 2, 5, 24, 1, 0),
+(4, 2, 6, 36, 1, 0),
+(5, 2, 8, 5, 1, 0),
+(6, 3, 5, 24, 1, 0),
+(7, 3, 7, 7, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -129,13 +151,22 @@ CREATE TABLE `orderdetails` (
 
 CREATE TABLE `ordermaster` (
   `id` int(11) NOT NULL,
-  `cutomername` varchar(1500) DEFAULT NULL,
-  `paymentsts` int(11) NOT NULL DEFAULT '0',
+  `cutomerid` int(11) DEFAULT NULL,
+  `paymentsts` varchar(50) DEFAULT NULL,
   `paidamount` double DEFAULT NULL,
   `createddate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `createdby` int(11) DEFAULT NULL,
   `companyid` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `ordermaster`
+--
+
+INSERT INTO `ordermaster` (`id`, `cutomerid`, `paymentsts`, `paidamount`, `createddate`, `createdby`, `companyid`) VALUES
+(1, 1, 'Full Paid', 120, '2019-01-03 12:59:31', 2, 1),
+(2, 2, 'Full Paid', 65, '2019-01-03 13:00:02', 2, 1),
+(3, 2, 'Full Paid', 31, '2019-01-03 13:00:18', 2, 1);
 
 -- --------------------------------------------------------
 
@@ -192,7 +223,14 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`id`, `name`, `brand`, `slot`, `mrp`, `description`, `porate`, `imgfile`, `createddate`, `createdby`, `companyid`) VALUES
-(1, 'TETS', 2, 'A', 20, 'TS', 0, 'file-1546258266225..jpg', '2018-12-31 17:41:06', 2, NULL);
+(1, 'TETS', 2, 'A', 20, 'TS', 0, 'file-1546258266225..jpg', '2018-12-31 17:41:06', 2, NULL),
+(5, 'NoteBook', 2, 'A', 24, 'NoteBook', 0, 'file-1546405967428..jpg', '2018-12-31 19:46:31', 2, 1),
+(6, 'A4 Notebook', 2, 'A', 36, 'A4 Notebook', 0, 'file-1546406296712..jpg', '2019-01-01 17:47:00', 2, 1),
+(7, 'Pen', 2, 'B', 7, 'Pen', 0, 'file-1546406005974..png', '2019-01-01 17:47:27', 2, 1),
+(8, 'Pencil', 2, 'B', 5, 'Pencil', 0, 'file-1546406307457..png', '2019-01-01 17:47:53', 2, 1),
+(9, 'Eraser', 2, 'B', 4, 'Eraser', 0, 'file-1546406593738..jpg', '2019-01-01 17:48:20', 2, 1),
+(10, 'Geometry Box', 2, 'C', 75, 'Geometry Box', 0, 'file-1546406034782..png', '2019-01-02 04:48:58', 2, 1),
+(11, 'Project Papers', 2, 'C', 20, 'Project Papers', 0, 'file-1546406320687..png', '2019-01-01 17:49:18', 2, 1);
 
 -- --------------------------------------------------------
 
@@ -305,25 +343,25 @@ ALTER TABLE `companymaster`
 -- AUTO_INCREMENT for table `cutomermaster`
 --
 ALTER TABLE `cutomermaster`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `inquiries`
 --
 ALTER TABLE `inquiries`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `orderdetails`
 --
 ALTER TABLE `orderdetails`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `ordermaster`
 --
 ALTER TABLE `ordermaster`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `podetails`
@@ -341,7 +379,7 @@ ALTER TABLE `pomaster`
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `user`

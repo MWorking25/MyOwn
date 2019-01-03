@@ -21,15 +21,29 @@
   "homepage": "https://github.com/MWorking25/MyOwn#readme",
   "dependencies": {
     "body-parser": "^1.18.3",
+    "bower": "^1.8.4",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "express": "^4.16.4",
+    "jshint-stylish": "^2.2.1",
     "jsonwebtoken": "^8.4.0",
+    "load-grunt-tasks": "^4.0.0",
     "multer": "^1.4.1",
     "mysql": "^2.16.0",
     "mysqldump": "^2.2.1",
     "nodemailer": "^5.0.0",
-    "sweetalert2": "^7.33.1"
+    "sweetalert2": "^7.33.1",
+    "time-grunt": "^2.0.0"
+  },
+  "devDependencies": {
+    "grunt": "^1.0.3",
+    "grunt-contrib-coffee": "^2.0.0",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-cssmin": "^3.0.0",
+    "grunt-contrib-sass": "^1.0.0",
+    "grunt-contrib-uglify": "^4.0.0",
+    "grunt-contrib-watch": "^1.1.0",
+    "grunt-express-server": "^0.5.4"
   }
 }

@@ -47,6 +47,17 @@ angular.module('MyApp')
       })
     }
 
+
+    
+    $scope.GetDashboardCount = function (interval) {
+      $http({
+        method: 'GET',
+        url: '/api/GetDashboardCount/'+interval,
+        dataType: 'jsonp'
+      }).then(function (response) {
+        $scope.DashboardCounts = response.data
+      });
+    };
     $scope.getMonthlyStockStatement = function () {
 
       am4core.useTheme(am4themes_animated);
