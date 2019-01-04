@@ -26,7 +26,70 @@ body {
 
 .passwordfield {
     position: relative !important;
+	width:150% !important;
 }
+
+
+@media only screen and (min-width: 1201px) {
+  .passwordfield {
+    position: relative !important;
+	width:125% !important;
+}
+}
+
+@media only screen and (min-width: 600px) and (max-width: 992px) {
+   .passwordfield {
+    position: relative !important;
+	width:125% !important;
+}
+}
+
+.changepasswordslot {
+    display: inline-block;
+	padding: 35px 106px 0px 10px;
+	border: 1px solid #EEE;
+}
+
+.loginslot {
+     display: inline-block;
+	 padding:35px 115px 0px 15px;
+	 border: 1px solid #EEE;
+}
+
+
+@media only screen and (min-width: 1201px) {
+  .changepasswordslot {
+    display: inline-block;
+	padding: 35px 100px 0px 50px;
+	border: 1px solid #EEE;
+}
+}
+
+@media only screen and (min-width: 600px) and (max-width: 992px) {
+  .changepasswordslot {
+    display: inline-block;
+	padding: 35px 100px 0px 50px;
+	border: 1px solid #EEE;
+}
+}
+
+@media only screen and (min-width: 1201px) {
+  .loginslot {
+    display: inline-block;
+	 padding: 35px 95px 0px 20px; 
+	border: 1px solid #EEE;
+}
+}
+
+@media only screen and (min-width: 600px) and (max-width: 992px) {
+  .loginslot {
+    display: inline-block;
+	 padding: 35px 95px 0px 20px; 
+	border: 1px solid #EEE;
+}
+}
+
+
 
 .badge:after {
     content: "100";

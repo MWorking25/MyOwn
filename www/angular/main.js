@@ -1,4 +1,10 @@
-angular.module('MyApp', ['ngSanitize','ngRoute','ui.bootstrap','ngFileUpload']).config(function($routeProvider) {
+angular.module('MyApp', ['ngSanitize','ngRoute','ui.bootstrap','ngFileUpload','ngIdle','ngCookies']).config(['KeepaliveProvider', 'IdleProvider', function(KeepaliveProvider, IdleProvider) {
+    IdleProvider.idle(10);
+    IdleProvider.timeout(10);
+    KeepaliveProvider.interval(10);
+
+    IdleProvider.interrupt('keydown wheel mousedown touchstart touchmove scroll');
+}]).config(function($routeProvider) {
     $routeProvider
     .when("/", {
         templateUrl : "public/Login.html",
@@ -18,19 +24,19 @@ angular.module('MyApp', ['ngSanitize','ngRoute','ui.bootstrap','ngFileUpload']).
     })
     .when("/Brands", {
         templateUrl : "public/Brands.html",
-		controller:"DashboardController"
+		controller:"ProductController"
     })
     .when("/Products", {
         templateUrl : "public/Products.html",
-		controller:"DashboardController"
+		controller:"ProductController"
     })
     .when("/Customers", {
         templateUrl : "public/Customers.html",
-		controller:"DashboardController"
+		controller:"ProductController"
     })
     .when("/Sales", {
         templateUrl : "public/Sales.html",
-		controller:"DashboardController"
+		controller:"ProductController"
     })
     .when("/Purchase", {
         templateUrl : "public/Purchase.html",
@@ -42,7 +48,7 @@ angular.module('MyApp', ['ngSanitize','ngRoute','ui.bootstrap','ngFileUpload']).
     })
     .when("/Inquiries", {
         templateUrl : "public/Inquiries.html",
-		controller:"DashboardController"
+		controller:"ProductController"
     })
     .when("/Companies", {
         templateUrl : "public/Companies.html",
@@ -53,6 +59,9 @@ angular.module('MyApp', ['ngSanitize','ngRoute','ui.bootstrap','ngFileUpload']).
 		controller:"LoginController"
     }).when("/OrdersCart", {
         templateUrl : "public/OrdersCart.html",
+		controller:"ProductController"
+    }).when("/SetNewPassword", {
+        templateUrl : "public/SetNewPassword.html",
 		controller:"LoginController"
     })
 	.otherwise({

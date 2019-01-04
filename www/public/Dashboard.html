@@ -1,6 +1,6 @@
 <main ng-controller="DashboardController">
     <div ng-include="'public/Mainmenu.html'"></div>
-        <div class="row mt-2 ml-lg-1 ml-md-1" ng-init="GetDashboardCount('Today')">
+        <div class="row mt-2 ml-lg-1 ml-md-1" ng-init="GetDashboardCount('Today');CheckFirsttimeLogin()">
             <div class="col s12 m6">
                 <label>
                     <input name="group1" type="radio" ng-click="GetDashboardCount('Today')" checked />
@@ -147,4 +147,14 @@
             <div class="row mt-1 ml-lg-1 ml-md-1">
                     <div class="col m12 s12"> <div class="card"><div id="brandwisesale"></div></div></div>
             </div>
+			
+			<div id="ChangePassword" class="modal">
+    <div class="modal-content">
+      <h4>Modal Header</h4>
+      <p>A bunch of text</p>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+    </div>
+  </div>
 </main>

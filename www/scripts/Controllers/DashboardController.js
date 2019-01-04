@@ -1,7 +1,11 @@
 angular.module('MyApp')
-  .controller('DashboardController', function ($scope, $http, $route) {
+	.controller('DashboardController', ['$scope', '$http', '$route', '$location', '$window', '$timeout', 'Upload','Idle', 'Keepalive', function ($scope, $http, $route, $location, $window, $timeout, Upload, Idle, Keepalive) {
 
     M.AutoInit();
+	
+	
+	
+	
 
     $scope.SignOut = function () {
       $http({
@@ -9,10 +13,55 @@ angular.module('MyApp')
         url: '/api/SignOut/',
         dataType: 'jsonp'
       }).then(function (response) {
-        alert(response.data.message)
-        location.href = "index.html";
+       Swal({
+					type: response.data.type,
+					title: response.data.title,
+					text: response.data.message,
+				}).then(() => {
+					location.href = "index.html";
+				})
       });
     };
+	
+	$scope.$on('IdleStart', function() {
+				// the user appears to have gone idle
+				
+				let timerInterval
+					Swal({
+					  title: 'Alert!',
+					  html: 'You are idle from last few seconds.',
+					  timer: 2000,
+					  onBeforeOpen: () => {
+						Swal.showLoading()
+						timerInterval = setInterval(() => {
+						  Swal.getContent().querySelector('strong')
+							.textContent = Swal.getTimerLeft()
+						}, 100)
+					  },
+					  onClose: () => {
+						clearInterval(timerInterval)
+					  }
+					}).then((result) => {
+					  if (
+						// Read more about handling dismissals
+						result.dismiss === Swal.DismissReason.timer
+					  ) {
+					  }
+					})
+				
+		 });
+		 $scope.$on('IdleTimeout', function() {
+		   // the user has timed out, let log them out
+		 $scope.SignOut()
+		 });
+		 $scope.$on('IdleEnd', function() {
+		  // the user has come back from AFK and is doing stuff
+		 });
+	
+	
+	  Idle.watch();
+
+	
 
     $scope.openNav = function () {
       document.getElementById("mySidenav").style.width = "250px";
@@ -797,4 +846,4 @@ angular.module('MyApp')
     getCoockies();
 
 
-  });
+  }]);

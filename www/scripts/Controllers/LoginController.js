@@ -1,34 +1,66 @@
 angular.module('MyApp')
-	.controller('LoginController', ['$scope', '$http', '$route', '$location', '$window', '$timeout', 'Upload', function ($scope, $http, $route, $location, $window, $timeout, Upload) {
+	.controller('LoginController', ['$scope', '$http', '$route', '$location', '$window', '$timeout', 'Upload','Idle', 'Keepalive', function ($scope, $http, $route, $location, $window, $timeout, Upload, Idle, Keepalive) {
 
 
 		M.AutoInit();
 
+		
+	
+		
+		
 		$scope.SignOut = function () {
 			$http({
 				method: 'GET',
 				url: '/api/SignOut/',
 				dataType: 'jsonp'
 			}).then(function (response) {
-				alert(response.data.message)
-				location.href = "index.html";
+				Swal({
+					type: response.data.type,
+					title: response.data.title,
+					text: response.data.message,
+				}).then(() => {
+					$location.path('/');
+				})
+				
 			});
 		};
+		
+		
+		$scope.$on('IdleStart', function() {
+				// the user appears to have gone idle
+		 });
+		 $scope.$on('IdleTimeout', function() {
+		   // the user has timed out, let log them out
+		 $scope.SignOut()
+		 });
+		 $scope.$on('IdleEnd', function() {
+		  // the user has come back from AFK and is doing stuff
+		 });
+	
+	
+	  Idle.watch();
+
 
 		$scope.openNav = function () {
 			document.getElementById("mySidenav").style.width = "250px";
 		}
 
 		$scope.closeNav = function () {
+			if(document.getElementById("mySidenav"))
+			{
 			document.getElementById("mySidenav").style.width = "0";
+			}
 		}
 
 
 		$scope.HitNav = function () {
+			if(document.getElementById("mySidenav"))
+			{
 			if (document.getElementById("mySidenav").style.width == '' || document.getElementById("mySidenav").style.width == '0px') {
 				$scope.openNav()
 			} else {
 				$scope.closeNav();
+			}
 			}
 
 		}
@@ -107,8 +139,108 @@ angular.module('MyApp')
 		};
 
 
+		  
+  
+  function scorePassword(pass) {
+    var score = 0;
+    if (!pass)
+        return score;
 
+    // award every unique letter until 5 repetitions
+    var letters = new Object();
+    for (var i=0; i<pass.length; i++) {
+        letters[pass[i]] = (letters[pass[i]] || 0) + 1;
+        score += 5.0 / letters[pass[i]];
+    }
 
+    // bonus points for mixing it up
+    var variations = {
+        digits: /\d/.test(pass),
+        lower: /[a-z]/.test(pass),
+        upper: /[A-Z]/.test(pass),
+        nonWords: /\W/.test(pass),
+    }
+
+    variationCount = 0;
+    for (var check in variations) {
+        variationCount += (variations[check] == true) ? 1 : 0;
+    }
+    score += (variationCount - 1) * 10;
+
+    return parseInt(score);
+}
+
+function checkPassStrength(pass) {
+    var score = scorePassword(pass);
+		if (score > 80)
+		{
+			if($scope.confirm_password === $scope.UserDetails[0].password)
+			{
+				$('#resetpassbtn').prop('disabled', false);
+			}
+			return "Strong";
+		}
+		if (score > 60)
+		{
+			if($scope.confirm_password === $scope.UserDetails[0].password)
+			{
+				$('#resetpassbtn').prop('disabled', false);
+			}
+			return "Good";
+		}
+		if (score >= 30)
+		{
+			return "Weak";
+		}
+	
+		
+    return "";
+}
+
+function ColorPassword(pass) {
+    var score = scorePassword(pass);
+    if (score > 80)
+        return "green";
+    if (score > 60)
+        return "#FFDB00";
+    if (score >= 30)
+        return "red";
+
+    return "";
+}
+
+   $scope.verfiPasswordConf = function(password,confpassword)
+  {
+		if(confpassword)
+		{
+			if(confpassword != password)
+			{
+				$scope.passstrenth = "Password and confirm password does not match";
+				$('#resetpassbtn').prop('disabled', true);
+			}
+			if(confpassword === password)
+			{
+				$scope.passstrenth = (checkPassStrength(password));
+			}
+		}
+  };
+  
+  
+  $scope.verifyPasswordStrongness = function(passkey)
+  {
+		if(!passkey || passkey === '')
+		$scope.passwordcalc = false;
+		else
+		$scope.passwordcalc = true;
+	
+		$scope.passstrenth = (checkPassStrength(passkey));
+        $scope.passscore = (scorePassword(passkey));
+        $scope.prgcol = (ColorPassword(passkey));
+		
+		$scope.verfiPasswordConf(passkey,$scope.confirm_password);
+		
+  };
+	
 		$scope.authUser = function () {
 
 			$http({
@@ -120,6 +252,11 @@ angular.module('MyApp')
 				}
 			}).then(function (response) {
 				if (response.data.success === true) {
+					if(response.data.firstlogin === 0)
+					{
+						$location.path('/SetNewPassword');
+					}
+					else
 					$location.path('/Dashboard');
 				}
 				if (response.data.success === false) {
@@ -129,6 +266,41 @@ angular.module('MyApp')
 		};
 
 
+		$scope.SetNewPassword = function () {
+			$http({
+				method: 'POST',
+				url: '/api/SetNewPassword',
+				data: $scope.UserDetails,
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			}).then(function (response) {
+				if(response.data.status == true)
+				{
+				Swal({
+					type: response.data.type,
+					title: response.data.title,
+					text: response.data.message,
+				}).then(() => {
+					if(response.data.forgotpassword === 1)
+						$location.path('/Login');
+						else
+						$location.path('/Dashboard');		
+					});
+				}
+				
+				else
+				{
+				Swal({
+					type: response.data.type,
+					title: response.data.title,
+					text: response.data.message,
+				})
+				}
+				
+			});
+		};
+		
 		$scope.ResetPassword = function () {
 			$http({
 				method: 'POST',
@@ -158,7 +330,6 @@ angular.module('MyApp')
 		}];
 		$scope.focusIndex = 0;
 		$scope.ForgotPassword = function () {
-
 			$http({
 				method: 'POST',
 				url: '/api/ForgotPassword',
@@ -169,12 +340,8 @@ angular.module('MyApp')
 			}).then(function (response) {
 
 				if (response.data.success === true) {
-					$scope.message = response.data.message;
-					$('#myModallOTP').modal({
-						backdrop: 'static',
-						keyboard: true,
-						show: true
-					});
+					$scope.sentotpmessage = response.data.message;
+					
 					$timeout(function () {
 						$scope.showbtn = true;
 						$timeout(timer, 1000);
@@ -182,7 +349,13 @@ angular.module('MyApp')
 
 
 				} else {
-					alert(response.data.message)
+					Swal({
+					type: response.data.type,
+					title: response.data.title,
+					text: response.data.message,
+				}).then(() => {
+						location.reload();
+				})
 				}
 			});
 		};
@@ -203,16 +376,13 @@ angular.module('MyApp')
 				dataType: 'jsonp'
 			}).then(function (response) {
 				if (response.data.status === 0) {
-					$('#myModallOTP').modal({
-						show: false
-					});
-					$('#myModallNewPassword').modal({
-						backdrop: 'static',
-						keyboard: true,
-						show: true
-					});
+					$location.path('/SetNewPassword');
 				} else {
-					alert(response.data.message);
+					Swal({
+					type: "error",
+					title: "Oops!",
+					text: "OTP does not match",
+				})
 				}
 			});
 		};

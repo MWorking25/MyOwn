@@ -1,20 +1,46 @@
-angular.module('MyApp').controller('ProductController', ['$scope', '$http', '$route', '$location', '$window', '$timeout', 'Upload', function ($scope, $http, $route, $location, $window, $timeout, Upload) {
+angular.module('MyApp')
+	.controller('ProductController', ['$scope', '$http', '$route', '$location', '$window', '$timeout', 'Upload','Idle', 'Keepalive', function ($scope, $http, $route, $location, $window, $timeout, Upload, Idle, Keepalive) {
 
 
 
   M.AutoInit();
-
+  
+		
   $scope.SignOut = function () {
     $http({
       method: 'GET',
       url: '/api/SignOut/',
       dataType: 'jsonp'
     }).then(function (response) {
-      alert(response.data.message)
-      location.href = "index.html";
+      Swal({
+					type: response.data.type,
+					title: response.data.title,
+					text: response.data.message,
+				}).then(() => {
+					location.href = "index.html";
+				})
     });
   };
 
+  
+  
+  
+	$scope.$on('IdleStart', function() {
+				// the user appears to have gone idle
+		 });
+		 $scope.$on('IdleTimeout', function() {
+		   // the user has timed out, let log them out
+		 $scope.SignOut()
+		 });
+		 $scope.$on('IdleEnd', function() {
+		  // the user has come back from AFK and is doing stuff
+		 });
+	
+	
+	  Idle.watch();
+
+  
+  
 
   $scope.openNav = function () {
     document.getElementById("mySidenav").style.width = "250px";
