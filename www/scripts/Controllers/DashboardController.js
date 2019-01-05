@@ -13,13 +13,7 @@ angular.module('MyApp')
         url: '/api/SignOut/',
         dataType: 'jsonp'
       }).then(function (response) {
-       Swal({
-					type: response.data.type,
-					title: response.data.title,
-					text: response.data.message,
-				}).then(() => {
-					location.href = "index.html";
-				})
+      $location.path('/');
       });
     };
 	
@@ -31,16 +25,6 @@ angular.module('MyApp')
 					  title: 'Alert!',
 					  html: 'You are idle from last few seconds.',
 					  timer: 2000,
-					  onBeforeOpen: () => {
-						Swal.showLoading()
-						timerInterval = setInterval(() => {
-						  Swal.getContent().querySelector('strong')
-							.textContent = Swal.getTimerLeft()
-						}, 100)
-					  },
-					  onClose: () => {
-						clearInterval(timerInterval)
-					  }
 					}).then((result) => {
 					  if (
 						// Read more about handling dismissals
@@ -107,6 +91,23 @@ angular.module('MyApp')
         $scope.DashboardCounts = response.data
       });
     };
+	
+	
+    $scope.GetDashboardCountOndates = function (fromdate,todate) {
+      $http({
+        method: 'GET',
+        url: '/api/GetDashboardCountOndates/'+fromdate+'/'+todate,
+        dataType: 'jsonp'
+      }).then(function (response) {
+        $scope.DashboardCounts = response.data
+      });
+    };
+	
+
+	
+
+	
+	
     $scope.getMonthlyStockStatement = function () {
 
       am4core.useTheme(am4themes_animated);
@@ -118,6 +119,33 @@ angular.module('MyApp')
       // Add percent sign to all numbers
       chart.numberFormatter.numberFormat = "#.3'%'";
 
+	  /* 
+	   $scope.monthlysaleNpo[0].reduce((sum,objvalue)=>{
+				if(objvalue.saledmonth ==  value.saledmonth)
+				{
+					console.log(sum)
+						sum + objvalue.saledqty
+				}
+			},0)
+			
+			 */
+	  
+	   $http({
+        method: 'GET',
+        url: '/api/getMonthlysaleNPurchase',
+        dataType: 'jsonp'
+      }).then(function (response) {
+        $scope.monthlysaleNpo = response.data
+		var datavalue = []
+		$scope.monthlysaleNpo[0].map((value)=>{
+			datavalue.push($scope.monthlysaleNpo[0].filter((objvalue)=>{
+				return objvalue.saledmonth ==  value.saledmonth
+			}));
+		});
+		console.log(datavalue);
+      });
+	  
+	  
       // Add data
       chart.data = [{
         "country": "USA",
@@ -180,49 +208,20 @@ angular.module('MyApp')
       // Create chart instance
       var chart = am4core.create("toptensaledprd", am4charts.RadarChart);
 
+	  
+	  
+	   $http({
+        method: 'GET',
+        url: '/api/getTopsaledProducts/',
+        dataType: 'jsonp'
+      }).then(function (response) {
+        $scope.TopTenProducts = response.data;
+		chart.data =  $scope.TopTenProducts;	  
+      });
+	  
+	   
       // Add data
-      chart.data = [{
-        "category": "Research",
-        "value": 80,
-        "full": 100
-      }, {
-        "category": "Marketing",
-        "value": 35,
-        "full": 100
-      }, {
-        "category": "Distribution",
-        "value": 92,
-        "full": 100
-      }, {
-        "category": "Human Resources",
-        "value": 68,
-        "full": 100
-      }, {
-        "category": "Human Resources1",
-        "value": 68,
-        "full": 100
-      }, {
-        "category": "Human Resources2",
-        "value": 68,
-        "full": 100
-      }, {
-        "category": "Human Resources 3",
-        "value": 68,
-        "full": 100
-      }, {
-        "category": "Human Resources 4",
-        "value": 68,
-        "full": 100
-      }, {
-        "category": "Human Resources 5",
-        "value": 68,
-        "full": 100
-      }, {
-        "category": "Human Resources 6",
-        "value": 68,
-        "full": 100
-      }];
-
+     
       // Make chart not full circle
       chart.startAngle = -90;
       chart.endAngle = 180;

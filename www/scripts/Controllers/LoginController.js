@@ -5,8 +5,6 @@ angular.module('MyApp')
 		M.AutoInit();
 
 		
-	
-		
 		
 		$scope.SignOut = function () {
 			$http({
@@ -14,24 +12,18 @@ angular.module('MyApp')
 				url: '/api/SignOut/',
 				dataType: 'jsonp'
 			}).then(function (response) {
-				Swal({
-					type: response.data.type,
-					title: response.data.title,
-					text: response.data.message,
-				}).then(() => {
-					$location.path('/');
-				})
+				$location.path('/');
 				
 			});
 		};
+		
 		
 		
 		$scope.$on('IdleStart', function() {
 				// the user appears to have gone idle
 		 });
 		 $scope.$on('IdleTimeout', function() {
-		   // the user has timed out, let log them out
-		 $scope.SignOut()
+			$scope.SignOut()
 		 });
 		 $scope.$on('IdleEnd', function() {
 		  // the user has come back from AFK and is doing stuff

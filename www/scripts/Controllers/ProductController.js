@@ -12,13 +12,7 @@ angular.module('MyApp')
       url: '/api/SignOut/',
       dataType: 'jsonp'
     }).then(function (response) {
-      Swal({
-					type: response.data.type,
-					title: response.data.title,
-					text: response.data.message,
-				}).then(() => {
-					location.href = "index.html";
-				})
+     $location.path('/');
     });
   };
 
@@ -111,14 +105,13 @@ angular.module('MyApp')
     }
   };
 
-
-  $scope.CalculateNetamount = function () {
-    var netamount = 0;
+   $scope.CalculateNetamount = function () {
+     var netamount = 0;
     $scope.CartList.map(function (value, index) {
       netamount += (value.mrp * value.qty);
     });
-    return netamount;
-  };
+    return netamount; 
+  }; 
 
 
   $scope.SubmitOrder = function () {

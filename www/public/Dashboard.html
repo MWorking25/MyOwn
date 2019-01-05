@@ -22,10 +22,10 @@
             <div class="col s12 m6">
                 <div class="row">
                     <div class="col s6">
-                        <input type="text" class="datepicker" ng-model="fromdate" ng-click="GetDashboardCountOndates(fromdate,todate)" placeholder="From Date">
+                        <input type="date"  ng-model="fromdate" ng-change="GetDashboardCountOndates(fromdate,todate)" placeholder="From Date">
                     </div>
                     <div class="col s6">
-                        <input type="text" class="datepicker" ng-model="todate" ng-click="GetDashboardCountOndates(fromdate,todate)" placeholder="To Date">
+                        <input type="date"  ng-model="todate" ng-change="GetDashboardCountOndates(fromdate,todate)" placeholder="To Date">
                     </div>
                 </div>
             </div>

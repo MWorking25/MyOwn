@@ -1,6 +1,6 @@
 angular.module('MyApp', ['ngSanitize','ngRoute','ui.bootstrap','ngFileUpload','ngIdle','ngCookies']).config(['KeepaliveProvider', 'IdleProvider', function(KeepaliveProvider, IdleProvider) {
-    IdleProvider.idle(10);
-    IdleProvider.timeout(10);
+    IdleProvider.idle(90);
+    IdleProvider.timeout(90);
     KeepaliveProvider.interval(10);
 
     IdleProvider.interrupt('keydown wheel mousedown touchstart touchmove scroll');
