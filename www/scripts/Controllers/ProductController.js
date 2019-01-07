@@ -414,6 +414,7 @@ $scope.DeleteInquiryDetails = function (inquiryid) {
       }
     })
   };
+  
 
   $scope.SaveProductDetails = function () {
     if ($scope.productsdetails.file.$valid && $scope.prdimage) {
@@ -451,6 +452,64 @@ $scope.DeleteInquiryDetails = function (inquiryid) {
     });
   };
 
+//    SALES DETAILS
+
+
+$scope.GetSaleListOninterval = function(interval)
+{
+	$scope.saleinterval = interval;
+	$http({
+        method: 'GET',
+        url: '/api/GetSaleListOninterval/'+interval,
+        dataType: 'jsonp'
+      }).then(function (response) {
+        $scope.SalesList = response.data
+      });
+};
+
+$scope.GetsaleListOndates = function (fromdate,todate) {
+      $http({
+        method: 'GET',
+        url: '/api/GetsaleListOndates/'+fromdate+'/'+todate,
+        dataType: 'jsonp'
+      }).then(function (response) {
+        $scope.SalesList = response.data
+		console.log($scope.SalesList);
+      });
+    };
+	
+$scope.DeleteSalesDetails = function (saleid) {
+    Swal({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.value) {
+        $http({
+          method: 'DELETE',
+          url: '/api/DeleteSalesDetails/' + saleid,
+          dataType: 'jsonp'
+        }).then(function (response) {
+          Swal({
+            type: response.data.type,
+            title: response.data.title,
+            text: response.data.message,
+          }).then(() => {
+            $scope.GetSaleListOninterval($scope.saleinterval);
+          })
+        });
+      }
+    })
+  };
+
+
+
+
+// EXTRA
 
 
   function readURL(input) {
