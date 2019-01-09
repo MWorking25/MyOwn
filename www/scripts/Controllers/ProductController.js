@@ -467,6 +467,33 @@ $scope.GetSaleListOninterval = function(interval)
       });
 };
 
+
+$scope.GenerateInvoiceCopy = function(orderid)
+{
+	$http({
+        method: 'GET',
+        url: '/api/GenerateInvoiceCopy/'+orderid,
+        dataType: 'jsonp'
+      }).then(function (response) {
+        if(response.data.status === 0)
+		{
+			var invoicecopy = response.data.filename;
+			document.getElementById("pdfinvoice").src = 'http://localhost:8082/pdf/'+invoicecopy;
+			console.log(document.getElementById("pdfinvoice"));
+		}
+		else
+		{
+			Swal({
+        type: response.data.type,
+        title: response.data.title,
+        text: response.data.message,
+		  }).then(() => {
+			location.reload();
+		  })
+		}
+      });
+};
+
 $scope.GetsaleListOndates = function (fromdate,todate) {
       $http({
         method: 'GET',
@@ -475,6 +502,18 @@ $scope.GetsaleListOndates = function (fromdate,todate) {
       }).then(function (response) {
         $scope.SalesList = response.data
 		console.log($scope.SalesList);
+      });
+    };
+	
+	
+	$scope.GetSalesDetails = function (saleid) {
+      $http({
+        method: 'GET',
+        url: '/api/GetSalesDetails/'+saleid,
+        dataType: 'jsonp'
+      }).then(function (response) {
+        $scope.SalesDetails = response.data
+		console.log($scope.SalesDetails);
       });
     };
 	
