@@ -57,7 +57,7 @@
                             <td>{{data.paymentsts}}</td>
                             <td>{{data.paidamount | number:2}}</td>
                             <td>{{data.createduser}}</td>
-							 <td class="text-nowrap text-center"><a class="btn cyan modal-trigger" data-target="Invoiceprint" ng-click="GenerateInvoiceCopy(data.masterid)">Invoice Copy</a> | <a class="btn amber" ng-click="GetSalesDetails(data.masterid)">Edit</a> | <a class="btn red"  ng-click="DeleteSalesDetails(data.masterid)">Delete</a></td>
+							 <td class="text-nowrap text-center"><a class="btn cyan modal-trigger" data-target="Invoiceprint" ng-click="GenerateInvoiceCopy(data.masterid)">Invoice Copy</a> | <a class="btn amber modal-trigger" data-target="Orderdetails"  ng-click="GetSalesDetails(data.masterid)">Edit</a> | <a class="btn red"  ng-click="DeleteSalesDetails(data.masterid)">Delete</a></td>
                         </tr>
                     </tbody>
     
@@ -67,10 +67,47 @@
         </div>
     
         <!-- Modal Structure -->
-        <div id="InquiryDetails" class="modal modal-fixed-footer">
+        <div id="Orderdetails" class="modal modal-fixed-footer">
             <div class="modal-content">
-                <h4>Product`s saled record</h4>
-               
+                <h4>Order details</h4>
+               <div class="row">
+				<div class="col s12 m6">
+					<b>Customer: {{SalesDetails[0].customer}}</b>
+				</div>
+				<div class="col s12 m6 text-right">
+				<b>Order Date: {{SalesDetails[0].orderdate}}</b>
+				</div>
+			   </div>
+			   <div class="col m12 s12">
+				<div class="table-responsive">
+					<table>
+						<thead>
+							<th>#</th>
+							<th>Product</th>
+							<th>Qty.</th>
+							<th>MRP</th>
+							<th>Net Value</th>
+						</thead>
+						<tbody>
+							<tr ng-repeat="objs in SalesDetails">
+								<td><i class="fa fa-minus-circle red-text" aria-hidden="true"></i> &nbsp;{{$index +1}}</td>
+								<td><input type="text" class="validate" placeholder="Product" ng-model="objs.productname"></td>
+								<td><input type="text" class="validate" placeholder="Product" ng-model="objs.qty"></td>
+								<td class="text-right">{{objs.mrp|number:2}}</td>
+								<td class="text-right">{{objs.mrp * objs.qty|number:2}}</td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									<button class="btn cyan" ng-click="AddNewSku()">Add SKU</button>
+								</td>
+								<td colspan="3" class="text-right">
+									Net Amount: {{SalesDetails[0].netamount | number:2}}
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			   </div>
             </div>
             <div class="modal-footer">
                 <a href="" class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>

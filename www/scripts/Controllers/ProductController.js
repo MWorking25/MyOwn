@@ -517,6 +517,19 @@ $scope.GetsaleListOndates = function (fromdate,todate) {
       });
     };
 	
+	$scope.AddNewSku = function()
+	{
+		var blank = $scope.SalesDetails.filter((value)=>{
+			return !value.productname 
+		});
+		if(blank.length > 0)
+		return false;
+		else
+		$scope.SalesDetails.push({});	
+	};
+	
+	
+	
 $scope.DeleteSalesDetails = function (saleid) {
     Swal({
       title: 'Are you sure?',
