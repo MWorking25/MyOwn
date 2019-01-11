@@ -82,7 +82,102 @@ angular.module('MyApp')
 
 
     
-    $scope.GetDashboardCount = function (interval) {
+    $scope.getTimewaiseSale = function (interval) {
+      $http({
+        method: 'GET',
+        url: '/api/getTimewaiseSale/'+interval,
+        dataType: 'jsonp'
+      }).then(function (response) {
+        if(response.data.status === 1)
+		{}
+		else
+		{
+			$scope.timechart = response.data
+			 // Create chart instance
+      var chart = am4core.create("mostsalingtime", am4charts.RadarChart);
+      chart.scrollbarX = new am4core.Scrollbar();
+	   var timehrs = [];
+      var data = [];
+
+      for (var i = 1; i < 13; i++) {
+        timehrs.push(i<10?'0'+i:String(i));
+      }
+		 timehrs.map(function(value){
+			$scope.timechart.map(function(resvalues){
+				if(value === resvalues.category)
+				{
+					data.push({
+						  category: value,
+						  value:resvalues.value
+						});
+				}
+				
+			});
+		});
+      chart.data = data;
+      chart.radius = am4core.percent(100);
+      chart.innerRadius = am4core.percent(50);
+
+      // Create axes
+      var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+      categoryAxis.dataFields.category = "category";
+      categoryAxis.renderer.grid.template.location = 0;
+      categoryAxis.renderer.minGridDistance = 30;
+      categoryAxis.tooltip.disabled = true;
+      categoryAxis.renderer.minHeight = 110;
+      categoryAxis.renderer.grid.template.disabled = true;
+      //categoryAxis.renderer.labels.template.disabled = true;
+      let labelTemplate = categoryAxis.renderer.labels.template;
+      labelTemplate.radius = am4core.percent(-60);
+      labelTemplate.location = 0.5;
+      labelTemplate.relativeRotation = 90;
+
+      var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+      valueAxis.renderer.grid.template.disabled = true;
+      valueAxis.renderer.labels.template.disabled = true;
+      valueAxis.tooltip.disabled = true;
+
+      // Create series
+      var series = chart.series.push(new am4charts.RadarColumnSeries());
+      series.sequencedInterpolation = true;
+      series.dataFields.valueY = "value";
+      series.dataFields.categoryX = "category";
+      series.columns.template.strokeWidth = 0;
+      series.tooltipText = "{valueY}";
+      series.columns.template.radarColumn.cornerRadius = 10;
+      series.columns.template.radarColumn.innerCornerRadius = 0;
+
+      series.tooltip.pointerOrientation = "vertical";
+
+      // on hover, make corner radiuses bigger
+      let hoverState = series.columns.template.radarColumn.states.create("hover");
+      hoverState.properties.cornerRadius = 0;
+      hoverState.properties.fillOpacity = 1;
+
+
+      series.columns.template.adapter.add("fill", function (fill, target) {
+        return chart.colors.getIndex(target.dataItem.index);
+      })
+
+      // Cursor
+      chart.cursor = new am4charts.RadarCursor();
+      chart.cursor.innerRadius = am4core.percent(50);
+      chart.cursor.lineY.disabled = true;
+			
+		}
+		
+		
+		
+		
+      });
+	  
+	  
+	  
+	  
+	  
+    };
+	
+	$scope.GetDashboardCount = function (interval) {
       $http({
         method: 'GET',
         url: '/api/GetDashboardCount/'+interval,
@@ -90,6 +185,7 @@ angular.module('MyApp')
       }).then(function (response) {
         $scope.DashboardCounts = response.data
       });
+	  $scope.getTimewaiseSale(interval);
     };
 	
 	
@@ -137,70 +233,64 @@ angular.module('MyApp')
         dataType: 'jsonp'
       }).then(function (response) {
         $scope.monthlysaleNpo = response.data
+		 var Months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 		var datavalue = []
-		$scope.monthlysaleNpo[0].map((value)=>{
+		Months.map((monthval)=>{
 			datavalue.push($scope.monthlysaleNpo[0].filter((objvalue)=>{
-				return objvalue.saledmonth ==  value.saledmonth
+				return monthval ==  objvalue.saledmonth
 			}));
 		});
-		console.log(datavalue);
-      });
-	  
-	  
+		
+		$scope.chartdata = [];
+		
+		datavalue.forEach((arrayobj,masterindex) =>
+		{
+			if(arrayobj.length > 0)
+			{
+				var totalsale = 0;
+				var totalpo = 0;
+				arrayobj.reduce(function(sum,objval){
+					totalsale += parseFloat(objval.saledqty);
+					totalpo +=  parseFloat(objval.poqty);
+				},0);
+				$scope.chartdata.push({'month':datavalue[masterindex][0].saledmonth,totalsale:totalsale,totalpo:totalpo})
+			}
+		});
+		console.log($scope.chartdata);	
+		
       // Add data
-      chart.data = [{
-        "country": "USA",
-        "year2004": 3.5,
-        "year2005": 4.2
-      }, {
-        "country": "UK",
-        "year2004": 1.7,
-        "year2005": 3.1
-      }, {
-        "country": "Canada",
-        "year2004": 2.8,
-        "year2005": 2.9
-      }, {
-        "country": "Japan",
-        "year2004": 2.6,
-        "year2005": 2.3
-      }, {
-        "country": "France",
-        "year2004": 1.4,
-        "year2005": 2.1
-      }, {
-        "country": "Brazil",
-        "year2004": 2.6,
-        "year2005": 4.9
-      }];
-
+      chart.data = $scope.chartdata;
       // Create axes
       var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
-      categoryAxis.dataFields.category = "country";
+      categoryAxis.dataFields.category = "month";
       categoryAxis.renderer.grid.template.location = 0;
       categoryAxis.renderer.minGridDistance = 30;
 
       var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-      valueAxis.title.text = "GDP growth rate";
+      valueAxis.title.text = "Sale And Purchases";
       valueAxis.title.fontWeight = 800;
 
       // Create series
       var series = chart.series.push(new am4charts.ColumnSeries());
-      series.dataFields.valueY = "year2004";
-      series.dataFields.categoryX = "country";
+      series.dataFields.valueY = "totalsale";
+      series.dataFields.categoryX = "month";
       series.clustered = false;
-      series.tooltipText = "GDP grow in {categoryX} (2004): [bold]{valueY}[/]";
+      series.tooltipText = "Monthly Sale: [bold]{valueY}[/]";
 
       var series2 = chart.series.push(new am4charts.ColumnSeries());
-      series2.dataFields.valueY = "year2005";
-      series2.dataFields.categoryX = "country";
+      series2.dataFields.valueY = "totalpo";
+      series2.dataFields.categoryX = "month";
       series2.clustered = false;
       series2.columns.template.width = am4core.percent(50);
-      series2.tooltipText = "GDP grow in {categoryX} (2005): [bold]{valueY}[/]";
+      series2.tooltipText = "Monthly Purchase: [bold]{valueY}[/]";
 
       chart.cursor = new am4charts.XYCursor();
       chart.cursor.lineX.disabled = true;
       chart.cursor.lineY.disabled = true;
+		
+      });
+	  
+	  
     };
 
 
@@ -765,72 +855,7 @@ angular.module('MyApp')
     };
 
 
-    $scope.MostSalingTime = function () {
-
-      // Create chart instance
-      var chart = am4core.create("mostsalingtime", am4charts.RadarChart);
-      chart.scrollbarX = new am4core.Scrollbar();
-
-      var data = [];
-
-      for (var i = 1; i < 13; i++) {
-        data.push({
-          category: i,
-          value: Math.round(Math.random() * 100)
-        });
-      }
-
-      chart.data = data;
-      chart.radius = am4core.percent(100);
-      chart.innerRadius = am4core.percent(50);
-
-      // Create axes
-      var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
-      categoryAxis.dataFields.category = "category";
-      categoryAxis.renderer.grid.template.location = 0;
-      categoryAxis.renderer.minGridDistance = 30;
-      categoryAxis.tooltip.disabled = true;
-      categoryAxis.renderer.minHeight = 110;
-      categoryAxis.renderer.grid.template.disabled = true;
-      //categoryAxis.renderer.labels.template.disabled = true;
-      let labelTemplate = categoryAxis.renderer.labels.template;
-      labelTemplate.radius = am4core.percent(-60);
-      labelTemplate.location = 0.5;
-      labelTemplate.relativeRotation = 90;
-
-      var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-      valueAxis.renderer.grid.template.disabled = true;
-      valueAxis.renderer.labels.template.disabled = true;
-      valueAxis.tooltip.disabled = true;
-
-      // Create series
-      var series = chart.series.push(new am4charts.RadarColumnSeries());
-      series.sequencedInterpolation = true;
-      series.dataFields.valueY = "value";
-      series.dataFields.categoryX = "category";
-      series.columns.template.strokeWidth = 0;
-      series.tooltipText = "{valueY}";
-      series.columns.template.radarColumn.cornerRadius = 10;
-      series.columns.template.radarColumn.innerCornerRadius = 0;
-
-      series.tooltip.pointerOrientation = "vertical";
-
-      // on hover, make corner radiuses bigger
-      let hoverState = series.columns.template.radarColumn.states.create("hover");
-      hoverState.properties.cornerRadius = 0;
-      hoverState.properties.fillOpacity = 1;
-
-
-      series.columns.template.adapter.add("fill", function (fill, target) {
-        return chart.colors.getIndex(target.dataItem.index);
-      })
-
-      // Cursor
-      chart.cursor = new am4charts.RadarCursor();
-      chart.cursor.innerRadius = am4core.percent(50);
-      chart.cursor.lineY.disabled = true;
-    };
-
+  
 
 
     function getCoockies() {
