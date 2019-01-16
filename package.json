@@ -29,6 +29,8 @@
     "html-pdf": "^2.2.0",
     "jshint-stylish": "^2.2.1",
     "jsonwebtoken": "^8.4.0",
+    "jssip": "^3.3.3",
+    "jssip-node-websocket": "^3.0.0",
     "load-grunt-tasks": "^4.0.0",
     "multer": "^1.4.1",
     "mysql": "^2.16.0",

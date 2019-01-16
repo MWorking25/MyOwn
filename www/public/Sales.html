@@ -4,7 +4,7 @@
             <div class="col s12 m12">
                 <h5>Sale</h5>
             </div>
-            <div class="col m4 s12" ng-init="GetSaleListOninterval('Today')">
+            <div class="col m4 s12" ng-init="GetSaleListOninterval('Today');ListProducts();">
                     <label>
                             <input name="group1" type="radio" checked ng-click="GetSaleListOninterval('Today')" />
                             <span>Today</span>
@@ -90,8 +90,8 @@
 						</thead>
 						<tbody>
 							<tr ng-repeat="objs in SalesDetails">
-								<td><i class="fa fa-minus-circle red-text" aria-hidden="true"></i> &nbsp;{{$index +1}}</td>
-								<td><input type="text" class="validate" placeholder="Product" ng-model="objs.productname"></td>
+								<td><i class="fa fa-minus-circle red-text" aria-hidden="true" ng-click="RemoveProduct(objs,$index)" style="cursor:pointer;"></i> &nbsp;{{$index +1}}</td>
+								<td><input type="text" class="validate" placeholder="Product" ng-model="objs.productname" uib-typeahead="obj as obj.name for obj in ProductsList | filter:$viewValue" typeahead-on-select="objs.mrp = $item.mrp"></td>
 								<td><input type="text" class="validate" placeholder="Product" ng-model="objs.qty"></td>
 								<td class="text-right">{{objs.mrp|number:2}}</td>
 								<td class="text-right">{{objs.mrp * objs.qty|number:2}}</td>
@@ -101,7 +101,15 @@
 									<button class="btn cyan" ng-click="AddNewSku()">Add SKU</button>
 								</td>
 								<td colspan="3" class="text-right">
-									Net Amount: {{SalesDetails[0].netamount | number:2}}
+									Net Amount: {{CalculateNetamount(SalesDetails) | number:2}}
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3" class="text-nowrap">
+									Paid Amount:  <input type="number" class="validate col s6 m3" placeholder="Paid Amount" ng-model="SalesDetails[0].paidamount">
+								</td>
+								<td colspan="2">
+                                   Balance: {{CalculateNetamount(SalesDetails) - SalesDetails[0].paidamount | number:2}}
 								</td>
 							</tr>
 						</tbody>
@@ -111,6 +119,7 @@
             </div>
             <div class="modal-footer">
                 <a href="" class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+                <a href="" class="modal-action modal-close waves-effect waves-green btn-flat" ng-click="UpdateSaleOrder()">Submit</a>
             </div>
         </div>
 

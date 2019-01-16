@@ -3,18 +3,21 @@
   <div class="row ml-lg-1 ml-md-1" ng-init="ListBrands();ListProducts();ListCustomers();">
 
     <div class="col s9 m9"> <input type="text" class="col m4 s12" placeholder="Search" ng-model="search"></div>
-    <div class="col s3 m3"><button data-target="modalConfirmCart" class="btn-floating  modal-trigger btn-large waves-effect waves-light red right mt-2"
+    <div class="col s3 m3 show-on-medium-and-down hide-on-large-only" ><button data-target="modalConfirmCart" class="btn-floating  modal-trigger btn-large waves-effect waves-light red right mt-2"
         ng-disabled="CartList.length === 0"><i class="fa fa-shopping-basket" aria-hidden="true"></i></button><span
         class="new badge">{{CartList.length}}</span></div>
-
-
-    <div class="col s6 m2 " ng-repeat="data in ProductsList | filter:search">
-      <div class="card  grey lighten-5">
+  </div>
+  <div class="row">
+  <div class="col m6 s12">
+    <div class="col s12 m4 right" ng-repeat="data in ProductsList | filter:search" style="height
+    :240px;" >
+      <div class="card  grey lighten-5" style="height
+      :220px;">
         <div class="card-content black-text carticons" style="background-image: url(../uploads/{{data.imgfile}})">
           <span class="card-title">{{data.name}}</span>
           <span class="card-title">{{data.brandname}}</span>
         </div>
-        <div class="card-action">
+        <div class="card-action text-nowrap">
           <a href="">Slot: {{data.slot}}</a>
           <a href="" class="text-right">{{data.mrp |number:2}}/-</a>
           <div class="quantity ml-auto mr-auto text-nowrap">
@@ -27,6 +30,9 @@
 
         </div>
       </div>
+    </div>
+    </div>
+    <div class="m6 hide-on-med-and-down"></div<>
     </div>
 
     <!-- Modal Structure -->
@@ -106,6 +112,4 @@
 
       </div>
     </div>
-
-  </div>
 </main>

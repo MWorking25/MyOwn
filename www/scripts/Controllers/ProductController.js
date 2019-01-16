@@ -135,6 +135,7 @@ angular.module('MyApp')
         $scope.CartList.map(function (value, index) {
           if (value.id === product.id) {
             product.qty = (product.qty ? product.qty : 0) + 1
+            value.qty = product.qty;
           } else {
             var found = $scope.CartList.find(function (obj) {
               return obj.id === product.id;
@@ -151,6 +152,7 @@ angular.module('MyApp')
       $scope.CartList.map(function (value, index) {
         if (value.id === product.id) {
           product.qty = (product.qty ? product.qty : 0) - 1
+          value.qty = product.qty;
           if ($scope.CartList[index].qty === 0) {
             $scope.CartList.splice(index, 1)
           }
@@ -159,11 +161,20 @@ angular.module('MyApp')
     }
   };
 
-   $scope.CalculateNetamount = function () {
+   $scope.CalculateNetamount = function (salesDeatils) {
      var netamount = 0;
-    $scope.CartList.map(function (value, index) {
-      netamount += (value.mrp * value.qty);
-    });
+    if(!salesDeatils)
+    {
+        $scope.CartList.map(function (value, index) {
+          netamount += (value.mrp * value.qty);
+        });
+    }
+    if(salesDeatils)
+    {
+      salesDeatils.map(function (value, index) {
+        netamount += (value.mrp * value.qty);
+      });
+    }
     return netamount; 
   }; 
 
@@ -174,6 +185,27 @@ angular.module('MyApp')
       method: 'POST',
       url: '/api/SubmitOrder',
       data: $scope.CartList,
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(function (response) {
+      Swal({
+        type: response.data.type,
+        title: response.data.title,
+        text: response.data.message,
+      }).then(() => {
+        location.reload();
+      })
+    });
+  };
+
+
+  $scope.UpdateSaleOrder = function () {
+    $scope.SalesDetails[0].newnetamount = $scope.CalculateNetamount();
+    $http({
+      method: 'POST',
+      url: '/api/UpdateSaleOrder',
+      data: $scope.SalesDetails,
       headers: {
         'Content-Type': 'application/json'
       }
@@ -567,7 +599,6 @@ $scope.GetsaleListOndates = function (fromdate,todate) {
         dataType: 'jsonp'
       }).then(function (response) {
         $scope.SalesDetails = response.data
-		console.log($scope.SalesDetails);
       });
     };
 	
@@ -580,6 +611,28 @@ $scope.GetsaleListOndates = function (fromdate,todate) {
 		return false;
 		else
 		$scope.SalesDetails.push({});	
+	};
+  
+  $scope.RemoveProduct = function(productobj,index)
+	{
+    if(!productobj.detailid)
+    {
+      $scope.SalesDetails.splice(index,1);
+    }
+    
+    if(productobj.detailid)
+    {
+      $http({
+        method: 'DELETE',
+        url: '/api/RemoveSaledProduct/'+productobj.detailid,
+        dataType: 'jsonp'
+      }).then(function (response) {
+        if(response.data.status === 0)
+        {
+          $scope.GetSalesDetails(productobj.masterid);
+        }
+      });
+    }
 	};
 	
 	
