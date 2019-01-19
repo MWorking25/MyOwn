@@ -551,6 +551,96 @@ function ColorPassword(pass) {
 				// console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
 			});
 		};
+		
+		//USER DETAILS
+		$scope.GetCompanyDetails = function (companyid) {
+			$http({
+				method: 'GET',
+				url: '/api/GetCompanyDetails/' + companyid,
+				dataType: 'jsonp'
+			}).then(function (response) {
+				$scope.CompanyDetails = response.data;
+				console.log($scope.CompanyDetails)
+			});
+		};
+
+		$scope.DeleteCompanyDetails = function (companyid) {
+
+			Swal({
+				title: 'Are you sure?',
+				text: "You won't be able to revert this!",
+				type: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Yes, delete it!'
+			}).then((result) => {
+				if (result.value) {
+					$http({
+						method: 'DELETE',
+						url: '/api/DeleteCompanyDetails/' + companyid,
+						dataType: 'jsonp'
+					}).then(function (response) {
+						Swal({
+							type: response.data.type,
+							title: response.data.title,
+							text: response.data.message,
+						}).then(() => {
+							location.reload();
+						})
+					});
+				}
+			})
+		};
+
+
+		$scope.ListCompanyies = function () {
+			$http({
+				method: 'GET',
+				url: '/api/ListCompanyies/',
+				dataType: 'jsonp'
+			}).then(function (response) {
+				$scope.CompanysList = response.data;
+			});
+		};
+
+
+
+		$scope.SaveUserDetails = function () {
+			if ($scope.userdetails.file.$valid && $scope.profilepic) {
+				var passeddata = {
+					file: $scope.profilepic,
+					UserDetails: $scope.UserDetails[0]
+				}
+			} else {
+				var passeddata = {
+					UserDetails: $scope.UserDetails[0]
+				}
+			}
+			Upload.upload({
+				url: '/api/SaveUserDetails',
+				data: passeddata
+			}).then(function (resp) {
+				Swal({
+					type: resp.data.type,
+					title: resp.data.title,
+					text: resp.data.message,
+				}).then(() => {
+					location.reload();
+				})
+			}, function (resp) {
+				Swal({
+					type: resp.data.type,
+					title: resp.data.title,
+					text: resp.data.message,
+				}).then(() => {
+
+				})
+			}, function (evt) {
+				var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+				// console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+			});
+		};
 
 
 		$scope.ValidateEmail = function () {
@@ -564,6 +654,22 @@ function ColorPassword(pass) {
 				$scope.emailvalidatests = response.data.status;
 				if ($scope.emailvalidatests === 2) {
 					$scope.SaveCompanyDetails();
+				}
+			});
+		};
+
+		
+		$scope.ValidateEmailForUser = function () {
+			$http({
+				method: 'GET',
+				url: '/api/ValidateEmail/' + $scope.UserDetails[0].email,
+				dataType: 'jsonp'
+			}).then(function (response) {
+				console.log(response)
+				$scope.emailvalidatemessage = response.data.message;
+				$scope.emailvalidatests = response.data.status;
+				if ($scope.emailvalidatests === 2) {
+					$scope.SaveUserDetails();
 				}
 			});
 		};

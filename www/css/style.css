@@ -2498,3 +2498,8 @@ button.badge-top-right:before {
 }
 
 
+#confcart
+{
+	height:480px;
+	overflow:auto;
+}

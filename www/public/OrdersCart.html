@@ -8,8 +8,8 @@
         class="new badge">{{CartList.length}}</span></div>
   </div>
   <div class="row">
-  <div class="col m6 s12">
-    <div class="col s12 m4 right" ng-repeat="data in ProductsList | filter:search" style="height
+  <div class="col m8 s8">
+    <div class="col s12 m3 left" ng-repeat="data in ProductsList | filter:search" style="height
     :240px;" >
       <div class="card  grey lighten-5" style="height
       :220px;">
@@ -32,7 +32,77 @@
       </div>
     </div>
     </div>
-    <div class="m6 hide-on-med-and-down"></div<>
+    <div class="col m4 s4 hide-on-med-and-down" id="confcart">
+	
+			<div class="row">
+			<div class="table-responsive">
+				<table class="table">
+					<thead>
+						<th>#</th>
+						<th>Product</th>
+						<th>MRP</th>
+						<th>Qty.</th>
+						<th>Amount</th>
+					</thead>
+					<tbody>
+						<tr ng-repeat="objs in CartList">
+						<td>{{$index +1}}</td>
+						<td>{{objs.name}} - {{objs.brandname}}</td>
+						<td class="text-right">{{objs.mrp|number:2}}</td>
+						<td>
+                    <div class="quantity ml-auto mr-auto text-nowrap">
+                      <a class="waves-effect waves-light btn btn-small btn-floating cartbtn plus-btn" ng-click="Updatecart('add',objs)"><i
+                          class="material-icons left">add</i></a>
+                      <input type="text" name="name" ng-model="objs.qty">
+                      <a class="waves-effect waves-light btn btn-small btn-floating cartbtn minus-btn" ng-disabled="(!objs.qty || objs.qty == 0)"
+                        ng-click="Updatecart('remove',objs)"><i class="material-icons left">remove</i></a>
+                    </div>
+                  </td>
+				  <td  class="text-right">{{objs.mrp * objs.qty |number:2}}</td>
+						</tr>
+						<tr>
+							<td colspan="3">Total:</td>
+							<td colspan="2" class="text-right">{{ (CalculateNetamount()|number:2 )||'00.00' | number:2}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			</div>
+	<div class="row">
+          <form name="customer">
+          <div class="col s12 m6">
+            <div class="input-field">
+              <input id="name" type="text" class="validate" ng-model="CartList[0].customername" uib-typeahead="custobj as (custobj.name +'-'+custobj.mobile) for custobj in CustomersList | filter:$viewValue" typeahead-on-select="GetCustomerDetails($item.id)" required>
+              <label for="name">Name</label>
+            </div>
+          </div>
+          <div class="col s12 m6">
+            <div class="input-field">
+              <input id="mobile" type="number" class="validate" ng-model="CartList[0].mobileno">
+              <label for="mobile">Mobile No.</label>
+            </div>
+          </div>
+          <div class="col s12 m5">
+            <div class="input-field">
+              <input id="email" type="email" class="validate" ng-model="CartList[0].email">
+              <label for="email">Email</label>
+            </div>
+          </div>
+          <div class="input-field col s12 m7">
+            <textarea id="address" class="materialize-textarea" ng-model="CartList[0].address"></textarea>
+            <label for="address">Address</label>
+          </div>
+        </form>
+        </div>
+		<div class="col s12 m12">
+            <div class="row right"><div class="col s6 m6"><b>Paid Amount:</b></div><div class="col s6 m6"> <input type="number" class="validate" placeholder="Paid Amount" ng-model="CartList[0].paidamount"></div></div>
+          </div>
+        <div class="col s12 m12">
+          <div class="row"><a href="" class="modal-close waves-effect waves-green btn-flat"
+              ng-disabled="CartList.length === 0 && customer.$invalid" ng-click="SubmitOrder()">Confirm</a>
+          </div>
+        </div>
+	</div>
     </div>
 
     <!-- Modal Structure -->

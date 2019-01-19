@@ -10,6 +10,24 @@
             <div class="col m3 s9 right">
                 <input type="text" class="validate" placeholder="Search" ng-model="Search">
             </div>
+			<div class="col m2 s5">
+           <select id="brand" ng-model="pageSize" ng-options="obj.value as obj.name for obj in recordsdisplay">
+                  <option value="" disabled selected>Choose your option</option>
+              </select>
+        </div>
+        <div class="col m4 s7 right">
+           
+		   <div class="row">
+			<button style='border:none;background:transparent;color:black;' ng-disabled='currentPage == 0' class="btn-flat" ng-click='currentPage=currentPage-1'><i class='fa fa-chevron-left'></i></button>
+			
+			<b>  {{currentPage+1}} / {{numberOfPages()}} </b>
+			<input type='number' min='1' max='{{maxpage}}' ng-change='checkcurrpage(myValue)' style='width:25%' class="hidden-xs" ng-model='myValue'>
+			
+			<button style='border:none;background:transparent;color:black' class='btn-flat' ng-disabled='currentPage >= UsersList.length/pageSize - 1' ng-click='currentPage=currentPage+1'><i class='fa fa-chevron-right'></i></button>
+		   </div>
+		   
+		   
+        </div>
             <div class="col m12 s12">
                 <div class="table-responsive">
                     <table class="table table-striped table-bordered">
@@ -22,7 +40,7 @@
                             <th class="text-center">Action</th>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="data in UsersList | filter:Search">
+                            <tr ng-repeat="data in UsersList | filter:Search | startFrom:currentPage*pageSize | limitTo:pageSize">
                                 <td> <label>
                                         <input type="checkbox" ng-model="data.bool" />
                                         <span>{{$index +1}}</span>
@@ -44,7 +62,7 @@
         <div id="UserDetails" class="modal modal-fixed-footer">
             <div class="modal-content">
                 <h4>User Details</h4>
-                <form>
+                <form name="userdetails">
                         <div class="row">
                                 <div class="input-field col s12 m6">
                                         <input id="name" type="text" class="validate" ng-model="UserDetails[0].name">
@@ -53,6 +71,7 @@
                                 <div class="input-field col s12 m6">
                                     <input id="email" type="email" class="validate" ng-model="UserDetails[0].email">
                                     <label for="email">Email</label>
+									<span class="red-text">{{emailvalidatemessage}}</span>
                                 </div>
                                 
                             </div>
@@ -67,11 +86,11 @@
                                   </select>
                         <label for="role">Role</label>
                     </div>
-                    <div class="input-field col s6 m4 passwordfield">
+                    <!-- <div class="input-field col s6 m4 passwordfield">
                         <input id="password" type="password" class="validate" ng-model="UserDetails[0].password">
                         <label for="password">Password</label>
                         <i class="material-icons showhidepassword" ng-click="showHidePassword('password')">{{paswdvsicon}}</i>
-                    </div>
+                    </div> -->
                 </div>
                    
                     <div class="row">
@@ -79,7 +98,7 @@
                                     <div class="file-field input-field">
                                             <div class="btn">
                                               <span>File</span>
-                                              <input type="file" id="imgInp" ngf-select ng-model="file" name="file" ngf-pattern="'image/*'"
+                                              <input type="file" id="imgInp" ngf-select ng-model="profilepic" name="file" ngf-pattern="'image/*'"
                                               ngf-accept="'image/*'" ngf-max-size="20MB" ngf-min-height="100" 
                                               ngf-resize="{width: 100, height: 100}">
                                             </div>
@@ -97,7 +116,7 @@
             </div>
             <div class="modal-footer">
                 <a href="" class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>
-                <a href="" ng-click="SaveUserDetails()" class="modal-action modal-close waves-effect waves-green btn-flat">Submit</a>
+                <a href="" ng-click="ValidateEmailForUser()" ng-disabled="userdetails.$invalid || (emailvalidatests && emailvalidatests != 2)" class="modal-action modal-close waves-effect waves-green btn-flat">Submit</a>
             </div>
         </div>
     </main>

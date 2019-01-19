@@ -112,7 +112,6 @@ angular.module('MyApp')
 					{
 						$scope.myValue = 1;
 					}
-								$(".loader").fadeOut("slow");
 					$scope.numberOfPages = function () {
 						return Math.ceil(listdata.length / $scope.pageSize);
 					};
@@ -223,13 +222,18 @@ angular.module('MyApp')
 
   // BRANDS
 
-  $scope.ListBrands = function () {
+  $scope.ListBrands = function (indicator) {
     $http({
       method: 'GET',
       url: '/api/ListBrands/',
       dataType: 'jsonp'
     }).then(function (response) {
       $scope.BrandsList = response.data;
+	  if(indicator === '1')
+	  {
+		  $scope.NavHeader = "Brands";
+		  $scope.pagination($scope.BrandsList);
+	  }
     });
   };
 
@@ -300,13 +304,17 @@ angular.module('MyApp')
 
 //CUSTOMERS
 
-$scope.ListCustomers = function () {
+$scope.ListCustomers = function (indecator) {
   $http({
     method: 'GET',
     url: '/api/ListCustomers/',
     dataType: 'jsonp'
   }).then(function (response) {
     $scope.CustomersList = response.data;
+	if(indecator === '1')
+	{
+		$scope.pagination($scope.CustomersList);
+	}
   });
 };
 
@@ -379,13 +387,17 @@ $scope.DeleteCustomerDetails = function (custid) {
   
   // INQUIRIES
   
-$scope.ListInquiries = function () {
+$scope.ListInquiries = function (indecator) {
   $http({
     method: 'GET',
     url: '/api/ListInquiries/',
     dataType: 'jsonp'
   }).then(function (response) {
     $scope.InquirysList = response.data;
+	if(indecator === '1')
+	{
+		$scope.pagination($scope.InquirysList);
+	}
   });
 };
 
@@ -452,13 +464,17 @@ $scope.DeleteInquiryDetails = function (inquiryid) {
 
   // PRODUCTS
 
-  $scope.ListProducts = function () {
+  $scope.ListProducts = function (indecator) {
     $http({
       method: 'GET',
       url: '/api/ListProducts/',
       dataType: 'jsonp'
     }).then(function (response) {
       $scope.ProductsList = response.data;
+	  if(indecator === '1')
+	  {
+		  $scope.pagination($scope.ProductsList);
+	  }
     });
   };
 
@@ -550,6 +566,7 @@ $scope.GetSaleListOninterval = function(interval)
         dataType: 'jsonp'
       }).then(function (response) {
         $scope.SalesList = response.data
+		$scope.pagination($scope.SalesList);
       });
 };
 
@@ -671,6 +688,15 @@ $scope.DeleteSalesDetails = function (saleid) {
 // EXTRA
 
 
+  
+$(window).scroll(function() {
+	console.log('function');
+    $("#confcart").css({
+      "margin-top": ($(window).scrollTop()) + "px",
+    });
+  });
+
+
   function readURL(input) {
     if (input.files && input.files[0]) {
       var reader = new FileReader();
@@ -704,6 +730,9 @@ $scope.DeleteSalesDetails = function (saleid) {
   };
 
   getCoockies();
+
+  
+  
 
 
 
