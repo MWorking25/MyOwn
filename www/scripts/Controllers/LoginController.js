@@ -400,6 +400,7 @@ function ColorPassword(pass) {
 			});
 		};
 
+
 		$scope.SetFocus = function (index) {
 			$scope.focusIndex = index;
 		};
@@ -428,16 +429,21 @@ function ColorPassword(pass) {
 		};
 
 
-		$scope.Listusers = function () {
+		$scope.Listusers = function (indecator) {
+			alert('here')
 			$http({
 				method: 'GET',
 				url: '/api/Listusers/',
 				dataType: 'jsonp'
 			}).then(function (response) {
-				var Listusers = response.data;
-				console.log(Listusers)
+				$scope.UsersList = response.data;
+				console.log($scope.UsersList)
+				if(indecator === '1')
+				{
+					$scope.pagination($scope.UsersList)
+				}
 			});
-		}
+		};
 
 		$scope.UserRole = ['Admin', 'Staff'];
 
@@ -553,14 +559,13 @@ function ColorPassword(pass) {
 		};
 		
 		//USER DETAILS
-		$scope.GetCompanyDetails = function (companyid) {
+		$scope.GetUserDetails = function (userid) {
 			$http({
 				method: 'GET',
-				url: '/api/GetCompanyDetails/' + companyid,
+				url: '/api/GetUserDetails/' + userid,
 				dataType: 'jsonp'
 			}).then(function (response) {
-				$scope.CompanyDetails = response.data;
-				console.log($scope.CompanyDetails)
+				$scope.UserDetails = response.data;
 			});
 		};
 
@@ -649,7 +654,6 @@ function ColorPassword(pass) {
 				url: '/api/ValidateEmail/' + $scope.CompanyDetails[0].email,
 				dataType: 'jsonp'
 			}).then(function (response) {
-				console.log(response)
 				$scope.emailvalidatemessage = response.data.message;
 				$scope.emailvalidatests = response.data.status;
 				if ($scope.emailvalidatests === 2) {
@@ -662,10 +666,9 @@ function ColorPassword(pass) {
 		$scope.ValidateEmailForUser = function () {
 			$http({
 				method: 'GET',
-				url: '/api/ValidateEmail/' + $scope.UserDetails[0].email,
+				url: '/api/ValidateEmail/' + $scope.UserDetails[0].email+'/'+ $scope.UserDetails[0].id,
 				dataType: 'jsonp'
 			}).then(function (response) {
-				console.log(response)
 				$scope.emailvalidatemessage = response.data.message;
 				$scope.emailvalidatests = response.data.status;
 				if ($scope.emailvalidatests === 2) {

@@ -18,6 +18,10 @@ angular.module('MyApp', ['ngSanitize','ngAnimate','ngRoute','ui.bootstrap','ngFi
         templateUrl : "public/Dashboard.html",
 		controller:"DashboardController"
     })
+    .when("/Vendors", {
+        templateUrl : "public/Vendors.html",
+		controller:"ProductController"
+    })
     .when("/Users", {
         templateUrl : "public/Users.html",
 		controller:"LoginController"

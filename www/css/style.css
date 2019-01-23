@@ -26,67 +26,67 @@ body {
 
 .passwordfield {
     position: relative !important;
-	width:150% !important;
+    width: 150% !important;
 }
 
 
 @media only screen and (min-width: 1201px) {
-  .passwordfield {
-    position: relative !important;
-	width:125% !important;
-}
+    .passwordfield {
+        position: relative !important;
+        width: 125% !important;
+    }
 }
 
 @media only screen and (min-width: 600px) and (max-width: 992px) {
-   .passwordfield {
-    position: relative !important;
-	width:125% !important;
-}
+    .passwordfield {
+        position: relative !important;
+        width: 125% !important;
+    }
 }
 
 .changepasswordslot {
     display: inline-block;
-	padding: 35px 106px 0px 10px;
-	border: 1px solid #EEE;
+    padding: 35px 106px 0px 10px;
+    border: 1px solid #EEE;
 }
 
 .loginslot {
-     display: inline-block;
-	 padding:35px 115px 0px 15px;
-	 border: 1px solid #EEE;
+    display: inline-block;
+    padding: 35px 115px 0px 15px;
+    border: 1px solid #EEE;
 }
 
 
 @media only screen and (min-width: 1201px) {
-  .changepasswordslot {
-    display: inline-block;
-	padding: 35px 100px 0px 50px;
-	border: 1px solid #EEE;
-}
+    .changepasswordslot {
+        display: inline-block;
+        padding: 35px 100px 0px 50px;
+        border: 1px solid #EEE;
+    }
 }
 
 @media only screen and (min-width: 600px) and (max-width: 992px) {
-  .changepasswordslot {
-    display: inline-block;
-	padding: 35px 100px 0px 50px;
-	border: 1px solid #EEE;
-}
+    .changepasswordslot {
+        display: inline-block;
+        padding: 35px 100px 0px 50px;
+        border: 1px solid #EEE;
+    }
 }
 
 @media only screen and (min-width: 1201px) {
-  .loginslot {
-    display: inline-block;
-	 padding: 35px 95px 0px 20px; 
-	border: 1px solid #EEE;
-}
+    .loginslot {
+        display: inline-block;
+        padding: 35px 95px 0px 20px;
+        border: 1px solid #EEE;
+    }
 }
 
 @media only screen and (min-width: 600px) and (max-width: 992px) {
-  .loginslot {
-    display: inline-block;
-	 padding: 35px 95px 0px 20px; 
-	border: 1px solid #EEE;
-}
+    .loginslot {
+        display: inline-block;
+        padding: 35px 95px 0px 20px;
+        border: 1px solid #EEE;
+    }
 }
 
 
@@ -2247,22 +2247,22 @@ input[type=number]::-webkit-outer-spin-button {
     transition: 0.5s;
     padding-top: 60px;
     box-shadow: -2px 0px #e9e6e6;
-  }
-  
-  .sidenav_notification a {
+}
+
+.sidenav_notification a {
     padding: 8px 8px 8px 32px;
     text-decoration: none;
     font-size: 25px;
     color: #818181;
     display: block;
     transition: 0.3s;
-  }
-  
-  .sidenav_notification a:hover {
+}
+
+.sidenav_notification a:hover {
     color: #f1f1f1;
-  }
-  
-  .sidenav_notification .closebtn {
+}
+
+.sidenav_notification .closebtn {
     position: absolute;
     top: 50px;
     right: 50px;
@@ -2270,12 +2270,17 @@ input[type=number]::-webkit-outer-spin-button {
     font-size: 36px;
     margin-left: 50px;
     color: #f1f1f1;
-  }
-  
-  @media screen and (max-height: 450px) {
-    .sidenav_notification {padding-top: 15px;}
-    .sidenav_notification a {font-size: 18px;}
-  }
+}
+
+@media screen and (max-height: 450px) {
+    .sidenav_notification {
+        padding-top: 15px;
+    }
+
+    .sidenav_notification a {
+        font-size: 18px;
+    }
+}
 
 
 
@@ -2287,7 +2292,7 @@ button:before {
     text-align: center;
     display: block;
     border-radius: 50%;
-    background:transparent;
+    background: transparent;
     color: #FFF;
     position: absolute;
     top: 0;
@@ -2306,200 +2311,341 @@ button.badge-top-right:before {
 
 .quantity {
     margin: 0 auto !important;
-  }
-  .quantity input {
+}
+
+.quantity input {
     width: 50px !important;
     text-align: center !important;
     font-size: 16px !important;
     color: rgb(39, 41, 43) !important;
     font-weight: 300 !important;
-  }
-   
-  .btn.cartbtn {
+}
+
+.btn.cartbtn {
     width: 30px !important;
     height: 30px !important;
     background-color: rgb(194, 190, 187) !important;
     border-radius: 6px !important;
     border: none !important;
     cursor: pointer !important;
-  }
+}
 
-#imgpanel{
+#imgpanel {
     height: 120px;
     width: 120px;
 }
 
 
 
-.view.ng-leave 	{ z-index:9999; }
-.view.ng-enter 	{ z-index:8888; }
+.view.ng-leave {
+    z-index: 9999;
+}
+
+.view.ng-enter {
+    z-index: 8888;
+}
 
 
 /* slide out left */
 @keyframes slideOutLeft {
-	to 		{ transform: translateX(-100%); }
+    to {
+        transform: translateX(-100%);
+    }
 }
-@-moz-keyframes slideOutLeft {	
-	to 		{ -moz-transform: translateX(-100%); }
+
+@-moz-keyframes slideOutLeft {
+    to {
+        -moz-transform: translateX(-100%);
+    }
 }
+
 @-webkit-keyframes slideOutLeft {
-	to 		{ -webkit-transform: translateX(-100%); }
+    to {
+        -webkit-transform: translateX(-100%);
+    }
 }
 
 /* scale up */
 @keyframes scaleUp {
-	from 		{ opacity: 0.3; transform: scale(0.8); }
+    from {
+        opacity: 0.3;
+        transform: scale(0.8);
+    }
 }
+
 @-moz-keyframes scaleUp {
-	from 		{ opacity: 0.3; -moz-transform: scale(0.8); }
+    from {
+        opacity: 0.3;
+        -moz-transform: scale(0.8);
+    }
 }
+
 @-webkit-keyframes scaleUp {
-	from 		{ opacity: 0.3; -webkit-transform: scale(0.8); }
+    from {
+        opacity: 0.3;
+        -webkit-transform: scale(0.8);
+    }
 }
 
 
 /* slide in from the right */
 @keyframes slideInRight {
-	from 	{ transform:translateX(100%); }
-	to 		{ transform: translateX(0); }
+    from {
+        transform: translateX(100%);
+    }
+
+    to {
+        transform: translateX(0);
+    }
 }
+
 @-moz-keyframes slideInRight {
-	from 	{ -moz-transform:translateX(100%); }
-	to 		{ -moz-transform: translateX(0); }
+    from {
+        -moz-transform: translateX(100%);
+    }
+
+    to {
+        -moz-transform: translateX(0);
+    }
 }
+
 @-webkit-keyframes slideInRight {
-	from 	{ -webkit-transform:translateX(100%); }
-	to 		{ -webkit-transform: translateX(0); }
+    from {
+        -webkit-transform: translateX(100%);
+    }
+
+    to {
+        -webkit-transform: translateX(0);
+    }
 }
 
 
 /* slide in from the bottom */
 @keyframes slideInUp {
-	from 	{ transform:translateY(100%); }
-	to 		{ transform: translateY(0); }
+    from {
+        transform: translateY(100%);
+    }
+
+    to {
+        transform: translateY(0);
+    }
 }
+
 @-moz-keyframes slideInUp {
-	from 	{ -moz-transform:translateY(100%); }
-	to 		{ -moz-transform: translateY(0); }
+    from {
+        -moz-transform: translateY(100%);
+    }
+
+    to {
+        -moz-transform: translateY(0);
+    }
 }
+
 @-webkit-keyframes slideInUp {
-	from 	{ -webkit-transform:translateY(100%); }
-	to 		{ -webkit-transform: translateY(0); }
+    from {
+        -webkit-transform: translateY(100%);
+    }
+
+    to {
+        -webkit-transform: translateY(0);
+    }
 }
 
 
 /* rotate and fall */
 @-webkit-keyframes rotateFall {
-	0% { -webkit-transform: rotateZ(0deg); }
-	20% { -webkit-transform: rotateZ(10deg); -webkit-animation-timing-function: ease-out; }
-	40% { -webkit-transform: rotateZ(17deg); }
-	60% { -webkit-transform: rotateZ(16deg); }
-	100% { -webkit-transform: translateY(100%) rotateZ(17deg); }
+    0% {
+        -webkit-transform: rotateZ(0deg);
+    }
+
+    20% {
+        -webkit-transform: rotateZ(10deg);
+        -webkit-animation-timing-function: ease-out;
+    }
+
+    40% {
+        -webkit-transform: rotateZ(17deg);
+    }
+
+    60% {
+        -webkit-transform: rotateZ(16deg);
+    }
+
+    100% {
+        -webkit-transform: translateY(100%) rotateZ(17deg);
+    }
 }
+
 @-moz-keyframes rotateFall {
-	0% { -moz-transform: rotateZ(0deg); }
-	20% { -moz-transform: rotateZ(10deg); -moz-animation-timing-function: ease-out; }
-	40% { -moz-transform: rotateZ(17deg); }
-	60% { -moz-transform: rotateZ(16deg); }
-	100% { -moz-transform: translateY(100%) rotateZ(17deg); }
+    0% {
+        -moz-transform: rotateZ(0deg);
+    }
+
+    20% {
+        -moz-transform: rotateZ(10deg);
+        -moz-animation-timing-function: ease-out;
+    }
+
+    40% {
+        -moz-transform: rotateZ(17deg);
+    }
+
+    60% {
+        -moz-transform: rotateZ(16deg);
+    }
+
+    100% {
+        -moz-transform: translateY(100%) rotateZ(17deg);
+    }
 }
+
 @keyframes rotateFall {
-	0% { transform: rotateZ(0deg); }
-	20% { transform: rotateZ(10deg); animation-timing-function: ease-out; }
-	40% { transform: rotateZ(17deg); }
-	60% { transform: rotateZ(16deg); }
-	100% { transform: translateY(100%) rotateZ(17deg); }
+    0% {
+        transform: rotateZ(0deg);
+    }
+
+    20% {
+        transform: rotateZ(10deg);
+        animation-timing-function: ease-out;
+    }
+
+    40% {
+        transform: rotateZ(17deg);
+    }
+
+    60% {
+        transform: rotateZ(16deg);
+    }
+
+    100% {
+        transform: translateY(100%) rotateZ(17deg);
+    }
 }
 
 
 /* rotate out newspaper */
 @-webkit-keyframes rotateOutNewspaper {
-	to { -webkit-transform: translateZ(-3000px) rotateZ(360deg); opacity: 0; }
+    to {
+        -webkit-transform: translateZ(-3000px) rotateZ(360deg);
+        opacity: 0;
+    }
 }
+
 @-moz-keyframes rotateOutNewspaper {
-	to { -moz-transform: translateZ(-3000px) rotateZ(360deg); opacity: 0; }
+    to {
+        -moz-transform: translateZ(-3000px) rotateZ(360deg);
+        opacity: 0;
+    }
 }
+
 @keyframes rotateOutNewspaper {
-	to { transform: translateZ(-3000px) rotateZ(360deg); opacity: 0; }
+    to {
+        transform: translateZ(-3000px) rotateZ(360deg);
+        opacity: 0;
+    }
 }
 
 
 /* View 1 animations for page leave and enter */
-.view1.ng-leave         {
-    -webkit-animation:slideOutLeft 0.5s both ease-in;
-	-moz-animation:slideOutLeft 0.5s both ease-in;
-	animation:slideOutLeft 0.5s both ease-in;  
+.view1.ng-leave {
+    -webkit-animation: slideOutLeft 0.5s both ease-in;
+    -moz-animation: slideOutLeft 0.5s both ease-in;
+    animation: slideOutLeft 0.5s both ease-in;
 
 }
-.view1.ng-enter 		{  
-    -webkit-animation:scaleUp 0.5s both ease-in;
-	-moz-animation:scaleUp 0.5s both ease-in;
-	animation:scaleUp 0.5s both ease-in;    
+
+.view1.ng-enter {
+    -webkit-animation: scaleUp 0.5s both ease-in;
+    -moz-animation: scaleUp 0.5s both ease-in;
+    animation: scaleUp 0.5s both ease-in;
 }
 
 
 /* View 2 animations for page leave and enter */
-.view2.ng-leave        {
+.view2.ng-leave {
     -webkit-transform-origin: 0% 0%;
-	-webkit-animation: rotateFall 1s both ease-in;
-	-moz-transform-origin: 0% 0%;
-	-moz-animation: rotateFall 1s both ease-in;
-	transform-origin: 0% 0%;
-	animation: rotateFall 1s both ease-in;
+    -webkit-animation: rotateFall 1s both ease-in;
+    -moz-transform-origin: 0% 0%;
+    -moz-animation: rotateFall 1s both ease-in;
+    transform-origin: 0% 0%;
+    animation: rotateFall 1s both ease-in;
 
 }
-.view2.ng-enter 		{  
-    -webkit-animation:slideInRight 0.5s both ease-in;
-	-moz-animation:slideInRight 0.5s both ease-in;
-	animation:slideInRight 0.5s both ease-in;    
+
+.view2.ng-enter {
+    -webkit-animation: slideInRight 0.5s both ease-in;
+    -moz-animation: slideInRight 0.5s both ease-in;
+    animation: slideInRight 0.5s both ease-in;
 }
 
 
 /* View 3 animations for page leave and enter */
-.view3.ng-leave      {
+.view3.ng-leave {
     -webkit-transform-origin: 50% 50%;
-	-webkit-animation: rotateOutNewspaper .5s both ease-in;
-	-moz-transform-origin: 50% 50%;
-	-moz-animation: rotateOutNewspaper .5s both ease-in;
-	transform-origin: 50% 50%;
-	animation: rotateOutNewspaper .5s both ease-in;
+    -webkit-animation: rotateOutNewspaper .5s both ease-in;
+    -moz-transform-origin: 50% 50%;
+    -moz-animation: rotateOutNewspaper .5s both ease-in;
+    transform-origin: 50% 50%;
+    animation: rotateOutNewspaper .5s both ease-in;
 }
-.view3.ng-enter 		{ 
-    -webkit-animation:slideInUp 0.5s both ease-in;
-	-moz-animation:slideInUp 0.5s both ease-in;
-	animation:slideInUp 0.5s both ease-in;  
+
+.view3.ng-enter {
+    -webkit-animation: slideInUp 0.5s both ease-in;
+    -moz-animation: slideInUp 0.5s both ease-in;
+    animation: slideInUp 0.5s both ease-in;
 }
-.slide{
-  left:0;
+
+.slide {
+    left: 0;
 }
-.slide.ng-enter{
-  transition:.25s linear all;
-  position:fixed;
-  z-index:inherit;
-  left:-100%;
-  height:inherit;
+
+.slide.ng-enter {
+    transition: .25s linear all;
+    position: fixed;
+    z-index: inherit;
+    left: -100%;
+    height: inherit;
 }
-.slide.ng-leave{
-  transition:.25s linear all;
-  position:fixed;
-  z-index:9999;
-  right:0;
+
+.slide.ng-leave {
+    transition: .25s linear all;
+    position: fixed;
+    z-index: 9999;
+    right: 0;
 }
-.slide.ng-leave-active{
-  transition:.25s linear all;
-  position:fixed;
-  right:-100%;
-  left:100%;
+
+.slide.ng-leave-active {
+    transition: .25s linear all;
+    position: fixed;
+    right: -100%;
+    left: 100%;
 }
-.slide.ng-enter-active{
-  transition:.25s linear all;
-  left:0;
-  position:relative;
+
+.slide.ng-enter-active {
+    transition: .25s linear all;
+    left: 0;
+    position: relative;
 }
 
 
-#confcart
-{
-	height:480px;
-	overflow:auto;
+#confcart {
+    height: 480px;
+    overflow: auto;
+}
+
+.card-columns .card {
+    margin-bottom: .5rem !important;
+}
+
+@media (min-width:576px) {
+    .card-columns {
+        -webkit-column-count: 4;
+        -moz-column-count: 4;
+        column-count: 4;
+        -webkit-column-gap: .5rem;
+        -moz-column-gap: .5rem;
+        column-gap: .5rem;
+        orphans: 1;
+        widows: 1
+    }
 }

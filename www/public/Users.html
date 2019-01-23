@@ -1,6 +1,6 @@
 <main ng-controller="LoginController" >
         <div ng-include="'public/Mainmenu.html'"></div>
-        <div class="row ml-lg-1 ml-md-1">
+        <div class="row ml-lg-1 ml-md-1" ng-init="ListUsers('1')">
             <div class="col s12 m12">
                 <h5>Users</h5>
             </div>
@@ -37,6 +37,7 @@
                             <th class="text-center" data-field="email">Email</th>
                             <th class="text-center" data-field="mobile">Mobile</th>
                             <th class="text-center" data-field="role">Role</th>
+                            <th class="text-center" data-field="companyname">Company</th>
                             <th class="text-center">Action</th>
                         </thead>
                         <tbody>
@@ -49,6 +50,7 @@
                                 <td>{{data.email}}</td>
                                 <td>{{data.mobile}}</td>
                                 <td>{{data.role}}</td>
+                                <td>{{data.companyname}}</td>
                                 <td class="text-nowrap text-center"><a class="btn amber" ng-click="GetUserDetails(data.id)">Edit</a> | <a class="btn red"  ng-click="DeleteUserDetails(data.id)">Delete</a></td>
                             </tr>
                         </tbody>
