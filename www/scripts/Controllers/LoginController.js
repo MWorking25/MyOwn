@@ -429,19 +429,13 @@ function ColorPassword(pass) {
 		};
 
 
-		$scope.Listusers = function (indecator) {
-			alert('here')
+		$scope.Listusers = function () {
 			$http({
 				method: 'GET',
 				url: '/api/Listusers/',
 				dataType: 'jsonp'
 			}).then(function (response) {
 				$scope.UsersList = response.data;
-				console.log($scope.UsersList)
-				if(indecator === '1')
-				{
-					$scope.pagination($scope.UsersList)
-				}
 			});
 		};
 
@@ -559,6 +553,20 @@ function ColorPassword(pass) {
 		};
 		
 		//USER DETAILS
+		$scope.ListUsersDetails = function (indecator) {
+			$http({
+				method: 'GET',
+				url: '/api/ListUsersDetails/',
+				dataType: 'jsonp'
+			}).then(function (response) {
+				$scope.UserList = response.data;
+				if(indecator === '1')
+				{
+					$scope.pagination($scope.UserList);
+				}
+			});
+		};
+		
 		$scope.GetUserDetails = function (userid) {
 			$http({
 				method: 'GET',
@@ -569,7 +577,7 @@ function ColorPassword(pass) {
 			});
 		};
 
-		$scope.DeleteCompanyDetails = function (companyid) {
+		$scope.DeleteUserDetails = function (userid) {
 
 			Swal({
 				title: 'Are you sure?',
@@ -583,7 +591,7 @@ function ColorPassword(pass) {
 				if (result.value) {
 					$http({
 						method: 'DELETE',
-						url: '/api/DeleteCompanyDetails/' + companyid,
+						url: '/api/DeleteUserDetails/' + userid,
 						dataType: 'jsonp'
 					}).then(function (response) {
 						Swal({
