@@ -865,6 +865,11 @@ angular.module('MyApp')
         dataType: 'jsonp'
       }).then(function (response) {
         $scope.credentials = response.data;
+        if(!$window.localStorage['companyid'] && !$window.localStorage['userid'])
+          {
+            $window.localStorage['companyid'] = $scope.credentials.companyid;
+            $window.localStorage['userid'] = $scope.credentials.id;
+          }
       });
     };
 

@@ -1,10 +1,33 @@
 angular.module('MyApp')
-	.controller('ProductController', ['$scope', '$http', '$route', '$location', '$window', '$timeout', 'Upload','Idle', 'Keepalive', function ($scope, $http, $route, $location, $window, $timeout, Upload, Idle, Keepalive) {
+	.controller('ProductController', ['$scope', '$http', '$route', '$location', '$window', '$timeout', 'Upload','Idle', 'Keepalive','trafficCop', function ($scope, $http, $route, $location, $window, $timeout, Upload, Idle, Keepalive,trafficCop) {
 
 
 
   M.AutoInit();
   
+
+
+  // Attach the traffic cop directly to the scope so we can more easily
+                // output the totals (rather than having to set up a watcher to pipe the
+                // totals out of the service and into the scope for little-to-no benefit).
+                $scope.trafficCop = trafficCop;
+                // We can now watch the trafficCop service to see when there are pending
+                // HTTP requests that we're waiting for.
+                $scope.$watch(
+                    function calculateModelValue() {
+                        return( trafficCop.pending.all );
+                    },
+                    function handleModelChange( count ) {
+                        console.log(
+                            "Pending HTTP count:", count,
+                            "{",
+                                trafficCop.pending.get, "GET ,",
+                                trafficCop.pending.post, "POST",
+                            "}"
+                        );
+                    }
+                );
+
 		
   $scope.SignOut = function () {
     $http({
@@ -458,8 +481,6 @@ $scope.DeleteInquiryDetails = function (inquiryid) {
         });
       }
     })
-
-
   };
 
   // PRODUCTS
@@ -681,8 +702,173 @@ $scope.DeleteSalesDetails = function (saleid) {
       }
     })
   };
+	
+
+  // VENDOR
 
 
+  
+$scope.ListVendors = function(indecator)
+{
+	$http({
+        method: 'GET',
+        url: '/api/ListVendors/',
+        dataType: 'jsonp'
+      }).then(function (response) {
+        $scope.VendorsList = response.data
+        if(indecator === '1')
+        {
+          $scope.pagination($scope.VendorsList);
+        }
+      });
+};
+  
+$scope.GetVendorDetails = function(vendorid)
+{
+	$http({
+        method: 'GET',
+        url: '/api/GetVendorDetails/'+vendorid,
+        dataType: 'jsonp'
+      }).then(function (response) {
+        $scope.VendorDetails = response.data
+      });
+};
+
+$scope.DeleteVendorDetails = function (vendorid) {
+  Swal({
+    title: 'Are you sure?',
+    text: "You won't be able to revert this!",
+    type: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete it!'
+  }).then((result) => {
+    if (result.value) {
+      $http({
+        method: 'DELETE',
+        url: '/api/DeleteVendorDetails/' + vendorid,
+        dataType: 'jsonp'
+      }).then(function (response) {
+        Swal({
+          type: response.data.type,
+          title: response.data.title,
+          text: response.data.message,
+        }).then(() => {
+          $scope.ListVendors('1');
+        })
+      });
+    }
+  })
+};
+
+
+  $scope.SaveVendorsDetails = function()
+{
+	$http({
+      method: 'POST',
+      url: '/api/SaveVendorsDetails',
+      data: $scope.VendorDetails,
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(function (response) {
+      Swal({
+        type: response.data.type,
+        title: response.data.title,
+        text: response.data.message,
+      }).then(() => {
+        location.reload();
+      })
+    });
+};
+
+
+  $scope.ValidateEmailForVendor = function () {
+    $http({
+      method: 'GET',
+      url: '/api/ValidateEmailForVendor/' + $scope.VendorDetails[0].email+'/'+$scope.VendorDetails[0].id,
+      dataType: 'jsonp'
+    }).then(function (response) {
+      $scope.emailvalidatemessage = response.data.message;
+      $scope.emailvalidatests = response.data.status;
+      if ($scope.emailvalidatests === 2) {
+        $scope.SaveVendorsDetails();
+      }
+    });
+  };
+
+  // VENDOR
+
+
+  //  purchase
+
+  $scope.PODetails = [{}];
+  $scope.AddNewSkuForPO = function()
+	{
+		var blank = $scope.PODetails.filter((value)=>{
+			return !value.productname 
+		});
+		if(blank.length > 0)
+		return false;
+		else
+		$scope.PODetails.push({});	
+	};
+  
+  $scope.RemoveProductPo = function(productobj,index)
+	{
+    if(!productobj.detailid)
+    {
+      $scope.PODetails.splice(index,1);
+    }
+    
+    if(productobj.detailid)
+    {
+      $http({
+        method: 'DELETE',
+        url: '/api/RemovePosProduct/'+productobj.detailid,
+        dataType: 'jsonp'
+      }).then(function (response) {
+        if(response.data.status === 0)
+        {
+          //$scope.GetSalesDetails(productobj.masterid);
+        }
+      });
+    }
+  };
+  
+  $scope.CalculatePONetamount = function()
+  {
+    return $scope.PODetails[0].netamount = $scope.PODetails.reduce((sum,value) => {
+      return sum + (parseFloat(value.porate || 0) * parseFloat(value.qty || 0));
+   },0);
+};
+
+
+
+$scope.savePoOrder = function()
+{
+	$http({
+      method: 'POST',
+      url: '/api/savePoOrder',
+      data: $scope.PODetails,
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(function (response) {
+      Swal({
+        type: response.data.type,
+        title: response.data.title,
+        text: response.data.message,
+      }).then(() => {
+        location.reload();
+      })
+    });
+};
+
+
+
+  //  purchase
 
 
 // EXTRA
@@ -726,6 +912,11 @@ $(window).scroll(function() {
       dataType: 'jsonp'
     }).then(function (response) {
       $scope.credentials = response.data;
+      if(!$window.localStorage['companyid'] && !$window.localStorage['userid'])
+      {
+        $window.localStorage['companyid'] = $scope.credentials.companyid;
+        $window.localStorage['userid'] = $scope.credentials.id;
+      }
     });
   };
 

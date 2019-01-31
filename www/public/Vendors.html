@@ -1,6 +1,6 @@
 <main ng-controller="ProductController" >
         <div ng-include="'public/Mainmenu.html'"></div>
-        <div class="row ml-lg-1 ml-md-1">
+        <div class="row ml-lg-1 ml-md-1" ng-init="ListVendors('1')">
             <div class="col s12 m12">
                 <h5>Vendors</h5>
             </div>
@@ -45,11 +45,11 @@
                                         <input type="checkbox" ng-model="data.bool" />
                                         <span>{{$index +1}}</span>
                                     </label></td>
-                                    <td>{{data.name}}</td>
+                                    <td  class="text-nowrap">{{data.name}}</td>
                                 <td>{{data.email}}</td>
-                                <td>{{data.mobile}}</td>
-                                <td>{{data.createduser}}</td>
-                                <td class="text-nowrap text-center"><a class="btn amber" ng-click="GetVendorDetails(data.id)">Edit</a> | <a class="btn red"  ng-click="DeleteVendorDetails(data.id)">Delete</a></td>
+                                <td class="text-nowrap">{{data.mobile1}} <span ng-if="data.mobile2"> &nbsp;/ &nbsp;</span>{{data.mobile2}}</td>
+                                <td class="text-nowrap">{{data.createduser}}</td>
+                                <td class="text-nowrap text-center"><a class="btn amber modal-trigger" ng-click="GetVendorDetails(data.id)" data-target="VendorDetails">Edit</a> | <a class="btn red"  ng-click="DeleteVendorDetails(data.id)">Delete</a></td>
                             </tr>
                         </tbody>
     
@@ -64,9 +64,9 @@
                 <h4>Vendor Details</h4>
                 <form name="Vendordetails">
                       <div class="row">
-                        <div class="row">
+                       
                             <div class="input-field col s12 m12">
-                                    <input id="name" type="text" class="validate" ng-model="VendorDetails[0].name">
+                                    <input id="name" type="text" class="validate" ng-model="VendorDetails[0].name" required>
                                     <label for="name">Name</label>
                             </div>
                             <div class="input-field col s12 m12">
@@ -74,30 +74,31 @@
                                 <label for="address">Address</label>
                             </div>
                             <div class="input-field col s12 m6">
-                                    <input id="mobile" type="number" class="validate" ng-model="VendorDetails[0].mobile1">
+                                    <input id="mobile" type="number" class="validate" ng-model="VendorDetails[0].mobile1" required>
                                     <label for="mobile">Mobile No.</label>
                             </div>
-                            </div>
+                           
                             <div class="input-field col s12 m6">
-                                    <input id="mobile" type="number" class="validate" ng-model="VendorDetails[0].mobile2">
-                                    <label for="mobile">Alt. Mobile No.</label>
+                                    <input id="mobile2" type="number" class="validate" ng-model="VendorDetails[0].mobile2">
+                                    <label for="mobile2">Alt. Mobile No.</label>
                             </div>
+
                             <div class="input-field col s12 m6">
-                                <input id="email" type="email" class="validate" ng-model="VendorDetails[0].email">
+                                <input id="email" type="email" class="validate" ng-model="VendorDetails[0].email" required>
                                 <label for="email">Email</label>
+                                <span class="red-text">{{emailvalidatemessage}}</span>
                             </div>
-                            </div>
+                            
                             <div class="input-field col s12 m6">
                                 <input id="gstin" type="text" class="validate" ng-model="VendorDetails[0].gstin">
-                                <label for="email">GSTIN</label>
+                                <label for="gstin">GSTIN</label>
                             </div>
                         </div>
-                      </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <a href="" class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>
-                <a href="" ng-click="ValidateEmailForVendor()" ng-disabled="Vendordetails.$invalid || (emailvalidatests && emailvalidatests != 2)" class="modal-action modal-close waves-effect waves-green btn-flat">Submit</a>
+                <a href="" ng-click="ValidateEmailForVendor()" ng-disabled="Vendordetails.$invalid" class="waves-effect waves-green btn-flat">Submit</a>
             </div>
         </div>
     </main>
