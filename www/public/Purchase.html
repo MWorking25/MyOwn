@@ -66,8 +66,8 @@
                     <thead>
                         <th>#</th>
                         <th class="text-center" data-field="createddate">Date</th>
-                        <th class="text-center" data-field="skus">SKUs</th>
-                        <th class="text-center" data-field="totalqty">Total Qty.</th>
+                        <th class="text-center" data-field="vendorname">Vendor</th>
+                        <th class="text-center" data-field="totalqty">Total SKUs</th>
                         <!-- <th class="text-center"  data-field="paymentsts">Payment Status</th> -->
                         <th class="text-center" data-field="paidamount">Amount</th>
                         <th class="text-center" data-field="createduser">Created By</th>
@@ -77,8 +77,8 @@
                         <tr ng-repeat="data in PurchasesList | filter:Search | startFrom:currentPage*pageSize | limitTo:pageSize">
                             <td> {{$index +1}}</td>
                             <td>{{data.createddate | date:'dd/MM/yyyy'}}</td>
-                            <td>{{data.skus}}</td>
-                            <td>{{data.totalqty}}</td>
+                            <td>{{data.vendorname}}</td>
+                            <td>{{data.totalskus}}</td>
                             <!-- <td>{{data.paymentsts}}</td> -->
                             <td>{{data.netamount | number:2}}</td>
                             <td>{{data.createduser}}</td>
@@ -99,7 +99,7 @@
             <form name="poOrder">
                 <div class="row">
                     <div class="col s12 m4">
-                        <select id="vendor" ng-model="pageSize" ng-options="obj.id as obj.name for obj in VendorsList"
+                        <select id="vendor" ng-model="PODetails[0].vendorid" ng-options="obj.id as obj.name for obj in VendorsList"
                             required>
                             <option value="" disabled selected>Choose your option</option>
                         </select>
@@ -146,7 +146,7 @@
         </div>
         <div class="modal-footer">
             <a class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>
-            <a class="waves-effect waves-green btn-flat" ng-click="savePoOrder()">Submit</a>
+            <button class="waves-effect waves-green btn-flat"  ng-click="savePoOrder()">Submit</button>
         </div>
     </div>
 </main>

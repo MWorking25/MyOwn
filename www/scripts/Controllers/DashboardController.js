@@ -233,36 +233,39 @@ angular.module('MyApp')
         dataType: 'jsonp'
       }).then(function (response) {
         $scope.monthlysaleNpo = response.data
-		 var Months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-		var datavalue = []
-		Months.map((monthval)=>{
-			datavalue.push($scope.monthlysaleNpo[0].filter((objvalue)=>{
-				return monthval ==  objvalue.saledmonth
-			}));
-		});
+
+        console.log($scope.monthlysaleNpo);
+
+		//  var Months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+		// var datavalue = []
+		// Months.map((monthval)=>{
+		// 	datavalue.push($scope.monthlysaleNpo[0].filter((objvalue)=>{
+		// 		return monthval ==  objvalue.saledmonth
+		// 	}));
+		// });
 		
-		$scope.chartdata = [];
+		// $scope.chartdata = [];
 		
-		datavalue.forEach((arrayobj,masterindex) =>
-		{
-			if(arrayobj.length > 0)
-			{
-				var totalsale = 0;
-				var totalpo = 0;
-				arrayobj.reduce(function(sum,objval){
-					totalsale += parseFloat(objval.saledqty);
-					totalpo +=  parseFloat(objval.poqty);
-				},0);
-				$scope.chartdata.push({'month':datavalue[masterindex][0].saledmonth,totalsale:totalsale,totalpo:totalpo})
-			}
-		});
-		console.log($scope.chartdata);	
+		// datavalue.forEach((arrayobj,masterindex) =>
+		// {
+		// 	if(arrayobj.length > 0)
+		// 	{
+		// 		var totalsale = 0;
+		// 		var totalpo = 0;
+		// 		arrayobj.reduce(function(sum,objval){
+		// 			totalsale += parseFloat(objval.saledqty);
+		// 			totalpo +=  parseFloat(objval.poqty);
+		// 		},0);
+		// 		$scope.chartdata.push({'month':datavalue[masterindex][0].saledmonth,totalsale:totalsale,totalpo:totalpo})
+		// 	}
+		// });
+		// console.log($scope.chartdata);	
 		
       // Add data
-      chart.data = $scope.chartdata;
+      chart.data = $scope.monthlysaleNpo;
       // Create axes
       var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
-      categoryAxis.dataFields.category = "month";
+      categoryAxis.dataFields.category = "Month";
       categoryAxis.renderer.grid.template.location = 0;
       categoryAxis.renderer.minGridDistance = 30;
 
@@ -272,17 +275,17 @@ angular.module('MyApp')
 
       // Create series
       var series = chart.series.push(new am4charts.ColumnSeries());
-      series.dataFields.valueY = "totalsale";
-      series.dataFields.categoryX = "month";
+      series.dataFields.valueY = "OrdersAmount";
+      series.dataFields.categoryX = "Month";
       series.clustered = false;
-      series.tooltipText = "Monthly Sale: [bold]{valueY}[/]";
+      series.tooltipText = "Monthly Sale: [bold]{valueY}";
 
       var series2 = chart.series.push(new am4charts.ColumnSeries());
-      series2.dataFields.valueY = "totalpo";
-      series2.dataFields.categoryX = "month";
+      series2.dataFields.valueY = "PoAmount";
+      series2.dataFields.categoryX = "Month";
       series2.clustered = false;
       series2.columns.template.width = am4core.percent(50);
-      series2.tooltipText = "Monthly Purchase: [bold]{valueY}[/]";
+      series2.tooltipText = "Monthly Purchase: [bold]{valueY}";
 
       chart.cursor = new am4charts.XYCursor();
       chart.cursor.lineX.disabled = true;

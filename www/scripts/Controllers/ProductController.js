@@ -625,7 +625,7 @@ $scope.GetsaleListOndates = function (fromdate,todate) {
         dataType: 'jsonp'
       }).then(function (response) {
         $scope.SalesList = response.data
-		console.log($scope.SalesList);
+        $scope.pagination($scope.SalesList);
       });
     };
 	
@@ -846,8 +846,37 @@ $scope.DeleteVendorDetails = function (vendorid) {
 
 
 
+$scope.GetPurchaseListOninterval = function(interval)
+{
+	$scope.saleinterval = interval;
+	$http({
+        method: 'GET',
+        url: '/api/GetPurchaseListOninterval/'+interval,
+        dataType: 'jsonp'
+      }).then(function (response) {
+        $scope.PurchasesList = response.data
+	    	$scope.pagination($scope.PurchasesList);
+      });
+};
+
+$scope.GetPurchaseListOndates = function (fromdate,todate) {
+      $http({
+        method: 'GET',
+        url: '/api/GetPurchaseListOndates/'+fromdate+'/'+todate,
+        dataType: 'jsonp'
+      }).then(function (response) {
+        $scope.PurchasesList = response.data
+	    	$scope.pagination($scope.PurchasesList);
+      });
+    };
+	
+
+
 $scope.savePoOrder = function()
 {
+
+  $scope.PODetails[0].netamount = $scope.CalculatePONetamount();
+
 	$http({
       method: 'POST',
       url: '/api/savePoOrder',
