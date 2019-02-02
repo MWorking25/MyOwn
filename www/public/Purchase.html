@@ -82,8 +82,8 @@
                             <!-- <td>{{data.paymentsts}}</td> -->
                             <td>{{data.netamount | number:2}}</td>
                             <td>{{data.createduser}}</td>
-                            <td class="text-nowrap text-center"> <a class="btn amber modal-trigger" data-target="Orderdetails"
-                                    ng-click="GetSalesDetails(data.masterid)">Edit</a> | <a class="btn red" ng-click="DeleteSalesDetails(data.masterid)">Delete</a></td>
+                            <td class="text-nowrap text-center"> <a class="btn amber modal-trigger" data-target="NewPurchase"
+                                    ng-click="GetPurchaseDetails(data.id)">Edit</a> | <a class="btn red" ng-click="DeletePurchaseDetails(data.id)">Delete</a></td>
                         </tr>
                     </tbody>
 
@@ -99,10 +99,11 @@
             <form name="poOrder">
                 <div class="row">
                     <div class="col s12 m4">
-                        <select id="vendor" ng-model="PODetails[0].vendorid" ng-options="obj.id as obj.name for obj in VendorsList"
-                            required>
-                            <option value="" disabled selected>Choose your option</option>
-                        </select>
+                            <div class="input-field col s12 m12">
+                                    <input id="name" type="text" class="validate" ng-model="PODetails[0].vendorname" uib-typeahead="obj as obj.name for obj in VendorsList | filter:$viewValue"
+                                    typeahead-on-select="PODetails[0].vendorid = $item.id" placeholder="Search Vendor" autofocus required>
+                                    <label for="name">Vendor</label>
+                            </div>
                     </div>
                 </div>
                 <div class="row">

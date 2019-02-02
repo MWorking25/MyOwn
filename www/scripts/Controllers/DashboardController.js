@@ -96,31 +96,17 @@ angular.module('MyApp')
 			 // Create chart instance
       var chart = am4core.create("mostsalingtime", am4charts.RadarChart);
       chart.scrollbarX = new am4core.Scrollbar();
-	   var timehrs = [];
-      var data = [];
-
-      for (var i = 1; i < 13; i++) {
-        timehrs.push(i<10?'0'+i:String(i));
-      }
-		 timehrs.map(function(value){
-			$scope.timechart.map(function(resvalues){
-				if(value === resvalues.category)
-				{
-					data.push({
-						  category: value,
-						  value:resvalues.value
-						});
-				}
-				
-			});
-		});
-      chart.data = data;
+	  
+      chart.data = $scope.timechart;
       chart.radius = am4core.percent(100);
       chart.innerRadius = am4core.percent(50);
 
+
+      console.log($scope.timechart);
+
       // Create axes
       var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
-      categoryAxis.dataFields.category = "category";
+      categoryAxis.dataFields.category = "hours";
       categoryAxis.renderer.grid.template.location = 0;
       categoryAxis.renderer.minGridDistance = 30;
       categoryAxis.tooltip.disabled = true;
@@ -140,8 +126,8 @@ angular.module('MyApp')
       // Create series
       var series = chart.series.push(new am4charts.RadarColumnSeries());
       series.sequencedInterpolation = true;
-      series.dataFields.valueY = "value";
-      series.dataFields.categoryX = "category";
+      series.dataFields.valueY = "OrdersAmount";
+      series.dataFields.categoryX = "hours";
       series.columns.template.strokeWidth = 0;
       series.tooltipText = "{valueY}";
       series.columns.template.radarColumn.cornerRadius = 10;

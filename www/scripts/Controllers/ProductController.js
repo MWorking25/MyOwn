@@ -1,3 +1,4 @@
+
 angular.module('MyApp')
 	.controller('ProductController', ['$scope', '$http', '$route', '$location', '$window', '$timeout', 'Upload','Idle', 'Keepalive','trafficCop', function ($scope, $http, $route, $location, $window, $timeout, Upload, Idle, Keepalive,trafficCop) {
 
@@ -859,6 +860,49 @@ $scope.GetPurchaseListOninterval = function(interval)
       });
 };
 
+
+$scope.GetPurchaseDetails = function(poid)
+{
+	
+	$http({
+        method: 'GET',
+        url: '/api/GetPurchaseDetails/'+poid,
+        dataType: 'jsonp'
+      }).then(function (response) {
+        $scope.PODetails = response.data;
+        console.log($scope.PODetails);
+        $scope.ListVendors();
+      });
+};
+
+$scope.DeletePurchaseDetails = function (poid) {
+  Swal({
+    title: 'Are you sure?',
+    text: "You won't be able to revert this!",
+    type: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete it!'
+  }).then((result) => {
+    if (result.value) {
+      $http({
+        method: 'DELETE',
+        url: '/api/DeletePurchaseDetails/' + poid,
+        dataType: 'jsonp'
+      }).then(function (response) {
+        Swal({
+          type: response.data.type,
+          title: response.data.title,
+          text: response.data.message,
+        }).then(() => {
+          $scope.GetPurchaseListOninterval($scope.saleinterval)
+        })
+      });
+    }
+  })
+};
+
 $scope.GetPurchaseListOndates = function (fromdate,todate) {
       $http({
         method: 'GET',
@@ -899,6 +943,55 @@ $scope.savePoOrder = function()
 
   //  purchase
 
+
+  // inventory
+
+  $scope.getInventoryOnInterval = function(interval)
+{
+	$scope.saleinterval = interval;
+	$http({
+        method: 'GET',
+        url: '/api/getInventoryOnInterval/'+interval,
+        dataType: 'jsonp'
+      }).then(function (response) {
+        $scope.InventoryList = response.data
+	    	$scope.pagination($scope.PurchasesList);
+      });
+};
+
+  $scope.getInventoryOnDates = function(fromdate,todate)
+{
+  if(fromdate)
+  {
+    var frmdate = fromdate;
+        var fdd = frmdate.getDate();
+            fdd = fdd< 10?'0'+fdd:fdd;
+        var fmm = frmdate.getMonth() +1;
+            fmm = fmm < 10 ?'0'+fmm:fmm;
+        var fyy = frmdate.getFullYear();
+        var fdate = fdd+'-'+fmm+'-'+fyy;
+  }
+
+  if(todate)
+  {
+   
+        var fdd = todate.getDate();
+            fdd = fdd< 10?'0'+fdd:fdd;
+        var fmm = todate.getMonth() +1;
+            fmm = fmm < 10 ?'0'+fmm:fmm;
+        var fyy = todate.getFullYear();
+        var tdate = fdd+'-'+fmm+'-'+fyy;
+  }
+ 
+	$http({
+        method: 'GET',
+        url: '/api/getInventoryOnDates/'+fdate+'/'+tdate||'',
+        dataType: 'jsonp'
+      }).then(function (response) {
+        $scope.InventoryList = response.data
+	    	$scope.pagination($scope.PurchasesList);
+      });
+};
 
 // EXTRA
 
@@ -950,10 +1043,5 @@ $(window).scroll(function() {
   };
 
   getCoockies();
-
-  
-  
-
-
 
 }]);

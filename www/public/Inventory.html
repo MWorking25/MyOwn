@@ -4,31 +4,31 @@
             <div class="col s12 m12">
                 <h5>Inventory</h5>
             </div>
-            <div class="col m4 s12">
+            <div class="col m4 s12" ng-init="getInventoryOnInterval('Today');">
                     <label>
-                            <input name="group1" type="radio" checked />
+                            <input name="group1" type="radio" checked ng-click="getInventoryOnInterval('Today');" />
                             <span>Today</span>
                         </label>
                         <label>
-                            <input name="group1" type="radio" />
+                            <input name="group1" type="radio" ng-click="getInventoryOnInterval('Week');" />
                             <span>Week</span>
                         </label>
                         <label>
-                            <input name="group1" type="radio" />
+                            <input name="group1" type="radio" ng-click="getInventoryOnInterval('Month');" />
                             <span>Month</span>
                         </label>
                         <label>
-                            <input name="group1" type="radio" />
+                            <input name="group1" type="radio" ng-click="getInventoryOnInterval('Year');" />
                             <span>Year</span>
                         </label>
             </div>
             <div class="col m5 s12 left">
                     <div class="row">
-                            <div class="col s4">
-                                <input type="text" class="datepicker" placeholder="From Date">
+                            <div class="col s6">
+                                <input type="date"  ng-model="fromdate" ng-change="getInventoryOnDates(fromdate,todate)" placeholder="From Date">
                             </div>
-                            <div class="col s4">
-                                <input type="text" class="datepicker" placeholder="To Date">
+                            <div class="col s6">
+                                <input type="date"  ng-model="todate"  ng-change="getInventoryOnDates(fromdate,todate)" placeholder="To Date">
                             </div>
                         </div>
             </div>
@@ -51,10 +51,10 @@
                         <tr ng-repeat="data in InventoryList | filter:Search">
                             <td> {{$index +1}}</td>
                             <td>{{data.name}}</td>
-                            <td>{{data.mrp}}</td>
+                            <td class="right-align">{{data.mrp |number:2}}</td>
                             <td>{{data.openingbal}}</td>
-                            <td>{{data.qtyrcv}}</td>
-                            <td>{{data.qtyissue}}</td>
+                            <td>{{data.qtyrcvd}}</td>
+                            <td>{{data.qtyissued}}</td>
                             <td>{{data.closingbal}}</td>
                         </tr>
                     </tbody>
