@@ -104,7 +104,7 @@ angular.module('MyApp', ['ngSanitize','ngAnimate','ngRoute','ui.bootstrap','ngFi
                 // this is the definition of the interceptor - it must accept a
                 // config object and return a config object.
                 trafficCop.startRequest( config.method );
-               
+					//console.log(config);
                 // Pass-through original config object.
                 return( config );
             }
@@ -177,4 +177,3 @@ angular.module('MyApp', ['ngSanitize','ngAnimate','ngRoute','ui.bootstrap','ngFi
       }
     };
   });
-

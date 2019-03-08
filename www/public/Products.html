@@ -1,32 +1,36 @@
-<main ng-controller="ProductController">
+<main ng-controller="ProductController" id="ProductsDetails">
     <div ng-include="'public/Mainmenu.html'"></div>
-    <div class="row ml-lg-1 ml-md-1" ng-init="ListBrands();ListProducts('1')">
+    <div class="row ml-lg-1 ml-md-1" ng-init="ListBrands();ListProducts('1');insideProducts()">
         <div class="col s12 m12">
             <h5>Products</h5>
         </div>
-        <div class="col m2 s3">
+        <div class="col m4 s12">
             <a class="waves-effect waves-light btn modal-trigger" data-target="ProductDetails">Add New</a>
+            <a class="waves-effect waves-light btn modal-trigger" data-target="uploadProductDetails">Upload Products</a>
         </div>
         <div class="col m3 s9 right">
             <input type="text" class="validate" placeholder="Search" ng-model="Search">
         </div>
-		<div class="col m2 s5">
-           <select id="brand" ng-model="pageSize" ng-options="obj.value as obj.name for obj in recordsdisplay">
-                  <option value="" disabled selected>Choose your option</option>
-              </select>
+        <div class="col m1 s3">
+            <select id="brand" ng-model="pageSize" ng-options="obj.value as obj.name for obj in recordsdisplay">
+                <option value="" disabled selected>SELECT</option>
+            </select>
         </div>
-        <div class="col m4 s7 right">
-           
-		   <div class="row">
-			<button style='border:none;background:transparent;color:black;' ng-disabled='currentPage == 0' class="btn-flat" ng-click='currentPage=currentPage-1'><i class='fa fa-chevron-left'></i></button>
-			
-			<b>  {{currentPage+1}} / {{numberOfPages()}} </b>
-			<input type='number' min='1' max='{{maxpage}}' ng-change='checkcurrpage(myValue)' style='width:25%' class="hidden-xs" ng-model='myValue'>
-			
-			<button style='border:none;background:transparent;color:black' class='btn-flat' ng-disabled='currentPage >= ProductsList.length/pageSize - 1' ng-click='currentPage=currentPage+1'><i class='fa fa-chevron-right'></i></button>
-		   </div>
-		   
-		   
+        <div class="col m3 s8 right">
+
+            <div class="row">
+                <button style='border:none;background:transparent;color:black;' ng-disabled='currentPage == 0' class="btn-flat"
+                    ng-click='currentPage=currentPage-1'><i class='fa fa-chevron-left'></i></button>
+
+                <b> {{currentPage+1}} / {{numberOfPages()}} </b>
+                <input type='number' min='1' max='{{maxpage}}' ng-change='checkcurrpage(myValue)' style='width:25%'
+                    class="hidden-xs" ng-model='myValue'>
+
+                <button style='border:none;background:transparent;color:black' class='btn-flat' ng-disabled='currentPage >= ProductsList.length/pageSize - 1'
+                    ng-click='currentPage=currentPage+1'><i class='fa fa-chevron-right'></i></button>
+            </div>
+
+
         </div>
         <div class="col m12 s12">
             <div class="table-responsive">
@@ -45,11 +49,12 @@
                                     <input type="checkbox" ng-model="data.bool" />
                                     <span>{{$index +1}}</span>
                                 </label></td>
-                                <td>{{data.brandname}}</td>
+                            <td>{{data.brandname}}</td>
                             <td>{{data.name}}</td>
                             <td>{{data.slot}}</td>
                             <td>{{data.mrp}}</td>
-                            <td class="text-nowrap text-center"><a class="btn amber modal-trigger" data-target="ProductDetails" ng-click="GetProductDetails(data.id)">Edit</a> | <a class="btn red"  ng-click="DeleteProductDetails(data.id)">Delete</a></td>
+                            <td class="text-nowrap text-center"><a class="btn amber modal-trigger" data-target="ProductDetails"
+                                    ng-click="GetProductDetails(data.id)">Edit</a> | <a class="btn red" ng-click="DeleteProductDetails(data.id)">Delete</a></td>
                         </tr>
                     </tbody>
 
@@ -58,54 +63,59 @@
         </div>
     </div>
 
+
+    
+
+
+
+
     <!-- Modal Structure -->
     <div id="ProductDetails" class="modal modal-fixed-footer">
         <div class="modal-content">
             <h4>Product Details</h4>
             <form name="productsdetails">
                 <div class="row">
-                <div class="input-field col s6 m6">
+                    <div class="input-field col s6 m6">
                         <select id="brand" ng-model="ProductDetails[0].brand" ng-options="obj.id as obj.name for obj in BrandsList">
-                                <option value="" disabled selected>Choose your option</option>
-                              </select>
-                    <label for="brand">Brand</label>
+                            <option value="" disabled selected>Choose your option</option>
+                        </select>
+                        <label for="brand">Brand</label>
+                    </div>
+                    <div class="input-field col s6 m6">
+                        <input id="name" type="text" class="validate" ng-model="ProductDetails[0].name">
+                        <label for="name">Name</label>
+                    </div>
                 </div>
-                <div class="input-field col s6 m6">
-                    <input id="name" type="text" class="validate" ng-model="ProductDetails[0].name">
-                    <label for="name">Name</label>
-                </div>
-            </div>
                 <div class="input-field col s12 m12">
                     <textarea id="description" class="materialize-textarea" ng-model="ProductDetails[0].description"></textarea>
                     <label for="description">Description</label>
                 </div>
                 <div class="row">
-                        <div class="input-field col s4 m4">
-                                <input id="slot" type="text" class="validate" ng-model="ProductDetails[0].slot">
-                                <label for="slot">Slot</label>
-                        </div>
-                        <div class="input-field col s4 m4">
-                                <input id="mrp" type="number" class="validate" ng-model="ProductDetails[0].mrp">
-                                <label for="mrp">MRP</label>
-                        </div>
-                        <div class="input-field col s4 m4">
-                                <div class="file-field input-field">
-                                        <div class="btn">
-                                          <span>File</span>
-                                          <input type="file" id="imgInp" ngf-select ng-model="prdimage" name="file" ngf-pattern="'image/*'"
-                                          ngf-accept="'image/*'" ngf-max-size="20MB"  
-                                          ngf-resize="{width: 100, height: 100}">
-                                        </div>
-                                        <div class="file-path-wrapper">
-                                          <input class="file-path validate" placeholder="Select File" type="text">
-                                        </div>
-                                      </div>
-                        </div>
-                        <div class="col s12 m12">
-                                <img id="imgpanel" src="uploads/{{ProductDetails[0].imgfile}}"  />
-                                <button class="imgbtn btn grey" ng-click="clear()">Clear</button>
+                    <div class="input-field col s4 m4">
+                        <input id="slot" type="text" class="validate" ng-model="ProductDetails[0].slot">
+                        <label for="slot">Slot</label>
+                    </div>
+                    <div class="input-field col s4 m4">
+                        <input id="mrp" type="number" class="validate" ng-model="ProductDetails[0].mrp">
+                        <label for="mrp">MRP</label>
+                    </div>
+                    <div class="input-field col s4 m4">
+                        <div class="file-field input-field">
+                            <div class="btn">
+                                <span>File</span>
+                                <input type="file" id="imgInp" ngf-select ng-model="prdimage" name="file" ngf-pattern="'image/*'"
+                                    ngf-accept="'image/*'" ngf-max-size="20MB" ngf-resize="{width: 100, height: 100}">
+                            </div>
+                            <div class="file-path-wrapper">
+                                <input class="file-path validate" placeholder="Select File" type="text">
+                            </div>
                         </div>
                     </div>
+                    <div class="col s12 m12">
+                        <img id="imgpanel" src="uploads/{{ProductDetails[0].imgfile}}" />
+                        <button class="imgbtn btn grey" ng-click="clear()">Clear</button>
+                    </div>
+                </div>
             </form>
         </div>
         <div class="modal-footer">
@@ -113,4 +123,52 @@
             <a href="" ng-click="SaveProductDetails()" class="modal-action modal-close waves-effect waves-green btn-flat">Submit</a>
         </div>
     </div>
+
+
+    <!-- Modal Structure -->
+    <div id="uploadProductDetails" class="modal modal-fixed-footer">
+        <div class="modal-content">
+            <h4>Upload Products Details</h4>
+            <form name="productsdetails">
+
+
+                <div class="row">
+
+                    <div class="input-field col s6 m6">
+                        <a class="sampledownload" href="../../files/product_details.xlsx" download title="Download sample file"><i
+                                class="material-icons" style="font-size:64px">cloud_download</i></a>
+                    </div>
+                    <div class="input-field col s6 m6">
+                        <div class="file-field input-field">
+                            <div class="btn">
+                                <span>File</span>
+                                <input type="file" id="xlf" name="products_upload">
+                            </div>
+                            <div class="file-path-wrapper">
+                                <input class="file-path validate" placeholder="Select File" type="text">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-field col s12 m12" ng-if="statusMessage">
+                        <lable><i class="fas fa-spinner fa-pulse fa-2x"></i> {{statusMessage}}</lable>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <a href="" class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+            <button ng-click="myFunction()" id="submitbtn" class="waves-effect waves-green btn-flat">Submit</button>
+        </div>
+
+
+         
+
+
+
+    </div>
+
+   
+
 </main>
+

@@ -2686,3 +2686,8 @@ button.badge-top-right:before {
 .product-grid4 .add-to-cart:hover{background-color:#505050;box-shadow:0 0 10px rgba(0,0,0,.5)}
 @media only screen and (max-width:990px){.product-grid4{margin-bottom:30px}
 }
+
+
+.sampledownload{
+	color:black;
+}

@@ -576,6 +576,86 @@ $scope.DeleteInquiryDetails = function (inquiryid) {
     });
   };
 
+  $scope.UploadProducts = function(productsList)
+  {
+    $http({
+      method: 'POST',
+      url: '/api/UploadProducts',
+      data: productsList,
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(function (response) {
+      Swal({
+        type: response.data.type,
+        title: response.data.title,
+        text: response.data.message,
+      }).then(() => {
+        location.reload();
+      })
+    });
+  };
+
+
+  var X = XLSX;
+  function to_json(workbook) {
+      var result = {};
+      var data2pass = {};
+      workbook.SheetNames.forEach(function (sheetName) {
+          var roa = X.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+          var len = workbook.SheetNames.length;
+          if (roa.length > 0) {
+              result[sheetName] = roa;
+              angular.element(document.getElementById('ProductsDetails')).scope().UploadProducts(roa);
+          }
+      });
+      return result;
+  }
+
+  function process_wb(wb) {
+      var output = "";
+      output = JSON.stringify(to_json(wb), 2, 2);
+  }
+
+  var xlf = document.getElementById('xlf');
+  console.log(xlf);
+  var data = 0;
+  var prevevent = {};
+
+  function myeventnew(eee) {
+      prevevent = eee;
+  }
+
+  $scope.myFunction = function(){
+      var files = prevevent.target.files;
+      var f = files[0];
+      $scope.statusMessage = 'Data uploading is in progress please do not close the window.'
+      console.log(f)
+      var reader = new FileReader();
+      var name = f.name;
+      reader.onload = function (prevevent) {
+          var data = prevevent.target.result;
+          var wb;
+          wb = X.read(data, {
+              type: 'binary'
+          });
+          process_wb(wb);
+      };
+      reader.readAsBinaryString(f);
+
+  }
+
+  function handleFile(e) {
+    var ee = e;
+    if (ee) {
+        myeventnew(ee);
+    }
+}
+
+if(xlf)
+  xlf.addEventListener('change', handleFile, false);
+
+
 //    SALES DETAILS
 
 
@@ -998,7 +1078,6 @@ $scope.savePoOrder = function()
 
   
 $(window).scroll(function() {
-	console.log('function');
     $("#confcart").css({
       "margin-top": ($(window).scrollTop()) + "px",
     });

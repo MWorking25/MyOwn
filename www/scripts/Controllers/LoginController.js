@@ -705,45 +705,6 @@ function ColorPassword(pass) {
 		getCoockies();
 
 
-
-		//jssip example
-
-
-// 		var socket = new JsSIP.WebSocketInterface('wss://sip.google.com');
-// var configuration = {
-//   sockets  : [ socket ],
-//   uri      : 'sip:mhatre975@gmail.com',
-//   password : 'Admin@123'
-// };
-
-// var ua = new JsSIP.UA(configuration);
-
-// ua.start();
-
-// // Register callbacks to desired call events
-// var eventHandlers = {
-//   'progress': function(e) {
-//     console.log('call is in progress');
-//   },
-//   'failed': function(e) {
-//     console.log('call failed with cause: '+ e.data.cause);
-//   },
-//   'ended': function(e) {
-//     console.log('call ended with cause: '+ e.data.cause);
-//   },
-//   'confirmed': function(e) {
-//     console.log('call confirmed');
-//   }
-// };
-
-// var options = {
-//   'eventHandlers'    : eventHandlers,
-//   'mediaConstraints' : { 'audio': true, 'video': true }
-// };
-
-// var session = ua.call('sip:mhatremayur2520@gmail.com', options);
-
-
 	}]).directive('customAutofocus', function () {
 		return {
 			restrict: 'A',
